@@ -11,6 +11,7 @@ struct ship{
 	esat::Vec2 v_dir;
 	esat::Vec2 v_force;
 	float v;
+	float SpeedUp;
 };
 
 void InitShip(ship *nave){
@@ -19,6 +20,7 @@ void InitShip(ship *nave){
 	nave->v_dir = {0.f,0.f};
 	nave->v = 0;
 	nave->v_force = {0.f,0.f};
+	nave->SpeedUp = 0;
 }
 
 void DrawShip(ship *nave){
@@ -41,10 +43,16 @@ void RotateShip(ship *nave){
 
 void SpeedUp(ship *nave){
 	if(esat::IsSpecialKeyPressed(esat::kSpecialKey_Up)){
-		if (nave->v<10)
-			nave->v += 0.2;
-	}else if(nave->v > 0){
-		nave->v -= 0.2;
+		if (SpeedUp<1){
+			SpeedUp+=0.05;
+		}
+		nave->v_force = Vec2plusVec2(nave->v_force,Vec2xScalar(nave->v_dir,nave->SpeedUp*10));	
+			
+	}else{
+		SpeedUp -= 0.025;
+		nave->v_force = Vec2xScalar(nave->v_force,SpeedUp);
+		
+		
 	}
 		
 		
@@ -57,11 +65,11 @@ void UpdateVdir(ship *nave){
 }
 
 void UpdatePos(ship *nave){
-	nave->pos = Vec2plusVec2(nave->pos,Vec2xScalar(nave->v_force,nave->v));
+	nave->pos = Vec2plusVec2(nave->pos,Vec2xScalar(nave->v_dir,nave->v));
 }
 
-void UpdateVdir(ship *nave){
-	nave->v_force = Vec2plusVec2(nave->v_force,Vec2xScalar(nave->v_dir,nave->v));
-	nave->v_force = Vec2Normalized(nave->v_force);
-}
+void 
+
+
+
 
