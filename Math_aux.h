@@ -41,5 +41,43 @@ esat::Vec2 RotateVec2 (const esat::Vec2 &v, float radians, int sentido){
 
 }
 
+esat::Vec2 Vec2xScalar(const esat::Vec2 &v, float scalar){
+	esat::Vec2 s;
+	s.x = v.x * scalar;
+	s.y = v.y * scalar;
+	
+	return s;
+}
+
+esat::Vec2 Vec2minusVec2(const esat::Vec2 &v, const esat::Vec2 &w){
+	esat::Vec2 s;
+	s.x = v.x - w.x;
+	s.y = v.y - w.y; 
+	
+	return s;
+}
+
+esat::Vec2 Vec2plusVec2(const esat::Vec2 &v, const esat::Vec2 &w){
+	esat::Vec2 s;
+	s.x = v.x + w.x;
+	s.y = v.y + w.y; 
+	
+	return s;
+}
+
+float Module(const esat::Vec2 &v){
+	return(sqrt(v.x*v.x+v.y*v.y));
+}
+
+esat::Vec2 Vec2Normalized(const esat::Vec2 &v){
+	esat::Vec2 s;
+	float mod = Module(v);
+	s.x = v.x/mod;
+	s.y = v.y/mod;
+	
+	return s;
+}
+
+
 
 
