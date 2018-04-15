@@ -31,14 +31,16 @@ int esat::main(int argc, char **argv) {
 		
 		
 		UpdateVdir(&Nave);
-		UpdatePos(&Nave);
-		
 		
 		RotateShip(&Nave);
+		SpeedUp(&Nave);
 		
+		UpdatePos(&Nave);
+		CheckVforce(&Nave);
 		
 		DrawShip(&Nave);
-		SpeedUp(&Nave);
+		
+		printf("%f,%f\n",Nave.v_force.x,Nave.v_force.y );
 		
 		esat::DrawEnd();
 		do{

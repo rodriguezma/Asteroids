@@ -16,11 +16,11 @@ struct ship{
 
 void InitShip(ship *nave){
 	nave->pos = {500.f,300.f};
-	nave->ShipRads = 0;
+	nave->ShipRads = 0.f;
 	nave->v_dir = {0.f,0.f};
-	nave->v = 0;
+	nave->v = 0.f;
 	nave->v_force = {0.f,0.f};
-	nave->SpeedUp = 0;
+	nave->SpeedUp = 0.f;
 }
 
 void DrawShip(ship *nave){
@@ -43,18 +43,24 @@ void RotateShip(ship *nave){
 
 void SpeedUp(ship *nave){
 	if(esat::IsSpecialKeyPressed(esat::kSpecialKey_Up)){
-		if (SpeedUp<1){
-			SpeedUp+=0.05;
+		if (nave->SpeedUp<10){
+			nave->SpeedUp+=1;
 		}
-		nave->v_force = Vec2plusVec2(nave->v_force,Vec2xScalar(nave->v_dir,nave->SpeedUp*10));	
+
+		esat::Vec2 v_aux = Vec2xScalar(nave->v_dir,nave->SpeedUp);
+
+		nave->v += nave->SpeedUp;
+		if(nave->v > 20)
+			nave->v = 10;
+		
+		nave->v_force = Vec2plusVec2(nave->v_force,v_aux);	
 			
 	}else{
-		SpeedUp -= 0.025;
-		nave->v_force = Vec2xScalar(nave->v_force,SpeedUp);
-		
+		nave->SpeedUp = 0;
 		
 	}
-		
+	if(nave->v>0)
+	nave->v -=;	
 		
 }
 
@@ -65,10 +71,17 @@ void UpdateVdir(ship *nave){
 }
 
 void UpdatePos(ship *nave){
-	nave->pos = Vec2plusVec2(nave->pos,Vec2xScalar(nave->v_dir,nave->v));
+	nave->pos = Vec2plusVec2(nave->pos,nave->v_force);
 }
 
-void 
+void CheckVforce (ship *nave){
+	if(nave->v>0){
+		nave->v_force = Vec2Normalized(nave->v_force);
+	}
+	nave->v_force = Vec2xScalar(nave->v_force,nave->v);
+
+}
+
 
 
 
