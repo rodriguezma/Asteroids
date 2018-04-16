@@ -8,17 +8,20 @@
 #include <stdlib.h>
 
 #include <esat/math.h>
-#include "Asteroid.h"
+#include "ships.h"
+#include "asteroids.h"
 
 #define PI 3.14159265
 
 ship Nave;	
+asteroid asteroide;
 	
 int esat::main(int argc, char **argv) {
 	
 	double current_time,last_time; 		//tiempo que dura la musica inicial + tiempo actual
 	unsigned int fps=60;
 	esat::WindowInit(800,600);
+	Init_asteroid(&asteroide);
 	InitShip(&Nave);
 	WindowSetMouseVisibility(true);
 	
@@ -36,9 +39,9 @@ int esat::main(int argc, char **argv) {
 		SpeedUp(&Nave);
 		
 		UpdatePos(&Nave);
-		CheckVforce(&Nave);
 		
 		DrawShip(&Nave);
+		Draw_asteroid(&asteroide);
 		
 		printf("%f,%f\n",Nave.v_force.x,Nave.v_force.y );
 		
