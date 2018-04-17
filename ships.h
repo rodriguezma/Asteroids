@@ -12,6 +12,7 @@ struct ship{
 	esat::Vec2 v_force;
 	float v;
 	float SpeedUp;
+	float friction;
 
 };
 
@@ -22,6 +23,7 @@ void InitShip(ship *nave){
 	nave->v = 0.f;
 	nave->v_force = {0.f,0.f};
 	nave->SpeedUp = 0.f;
+	nave->friction = 0.f;
 	
 }
 
@@ -44,33 +46,44 @@ void RotateShip(ship *nave){
 }
 
 void CheckVforce(ship * nave){
-	if(Module(nave->v_force)>20){
-		float aux = 20/Module(nave->v_force);
+	if(Module(nave->v_force)>15){
+		float aux = 15/Module(nave->v_force);
 		nave->v_force = Vec2xScalar(nave->v_force,aux);
 	}
-	nave->v = Module(nave->v_force)/20;
+	nave->v = Module(nave->v_force)/15;
+}
+
+esat::Vec2 DecreseVforce(esat::Vec2 &v,float f){
+
+		return Vec2minusVec2(v,Vec2xScalar(v,f));
+
+
 }
 
 void SpeedUp(ship *nave){
 	if(esat::IsSpecialKeyPressed(esat::kSpecialKey_Up)){
-		if (nave->SpeedUp == 0){
+		if (nave->SpeedUp<3){
 			nave->SpeedUp+=0.001;
-		}else if (nave->SpeedUp<1){
-			nave->SpeedUp*=2;
 		}
 
-		esat::Vec2 v_aux = Vec2xScalar(nave->v_dir,nave->SpeedUp*0.5f);
+		esat::Vec2 v_aux = Vec2xScalar(nave->v_dir,nave->SpeedUp + 1.f);
 		nave->v_force = Vec2plusVec2(nave->v_force,v_aux);
 
 		CheckVforce(nave);
-			
+		nave->friction = 0.0001;
 	}else{
-		nave->v_force = Vec2plusVec2(nave->v_force,Vec2xScalar(Vec2Normalized(nave->v_force),-0.5f));
+		nave->friction = nave->friction * 1.2;
+		if(nave->friction > 1)
+			nave->friction = 1;
+		
+		nave->v_force = DecreseVforce(nave->v_force,nave->friction);
 		nave->SpeedUp = 0;
 		
 	}		
 	
 }
+
+
 
 void UpdateVdir(ship *nave){
 	nave->v_dir = Vec2minusVec2(nave->puntos_globales[0],nave->pos);
