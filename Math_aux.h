@@ -71,11 +71,16 @@ float Module(const esat::Vec2 &v){
 
 esat::Vec2 Vec2Normalized(const esat::Vec2 &v){
 	esat::Vec2 s;
-	float mod = Module(v);
-	s.x = v.x/mod;
-	s.y = v.y/mod;
+	if(Module(v)>0){
+		float mod = Module(v);
+		s.x = v.x/mod;
+		s.y = v.y/mod;
+		return s;
+	}else
+		return v;
 	
-	return s;
+	
+	
 }
 
 

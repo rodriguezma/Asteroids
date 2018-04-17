@@ -32,11 +32,13 @@ int esat::main(int argc, char **argv) {
 	    esat::DrawClear(0,0,0);
 		esat::DrawSetStrokeColor(255,255,255);
 		
-		
-		UpdateVdir(&Nave);
-		
 		RotateShip(&Nave);
+		UpdateVdir(&Nave);
 		SpeedUp(&Nave);
+		
+		
+		
+		
 		
 		UpdatePos(&Nave);
 		
