@@ -2,26 +2,45 @@
 #include <esat/draw.h>
 #include <esat/input.h>
 #include <esat/time.h>
+#include <esat/math.h>
 #include <stdio.h>
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
-#include <esat/math.h>
 #include "ships.h"
-#include "asteroids.h"
+#include "ListaAsteroids.h"
 
 #define PI 3.14159265
 
 ship Nave;	
-asteroid asteroide;
+
+NodoAsteroid *asteroides = NULL;
 	
 int esat::main(int argc, char **argv) {
+	
+	srand(time(NULL));
 	
 	double current_time,last_time; 		//tiempo que dura la musica inicial + tiempo actual
 	unsigned int fps=60;
 	esat::WindowInit(800,600);
-	Init_asteroid(&asteroide);
+	
+	asteroides = CrearLista();
+	asteroid asteroide1;
+	Init_asteroid(&asteroide1);
+	asteroid asteroide2;
+	Init_asteroid(&asteroide2);
+	asteroid asteroide3;
+	Init_asteroid(&asteroide3);
+	printf("hola");
+	InsertarLista(&asteroides,asteroide1);
+	printf("hola1");
+	InsertarLista(&asteroides,asteroide2);
+	InsertarLista(&asteroides,asteroide3);
+
+	
+	
 	InitShip(&Nave);
 	WindowSetMouseVisibility(true);
 	
@@ -35,15 +54,16 @@ int esat::main(int argc, char **argv) {
 		RotateShip(&Nave);
 		UpdateVdir(&Nave);
 		SpeedUp(&Nave);
-		
+		BorrarAst(&asteroides);
 		
 		
 		
 		
 		UpdatePos(&Nave);
+		MoveAsteroids(&asteroides);
 		
 		DrawShip(&Nave);
-		Draw_asteroid(&asteroide);
+		MostrarLista(asteroides);
 		
 		printf("%f,%f\n",Nave.v_force.x,Nave.v_force.y );
 		
