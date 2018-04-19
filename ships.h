@@ -1,6 +1,3 @@
-#include <esat/math.h>
-#include <esat/draw.h>
-#include <esat/input.h>
 #include "Math_aux.h"
 
 struct ship{

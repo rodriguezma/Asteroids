@@ -1,16 +1,12 @@
 #include <esat/window.h>
-#include <esat/draw.h>
 #include <esat/input.h>
 #include <esat/time.h>
 #include <esat/math.h>
 #include <stdio.h>
-#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-
-#include "ships.h"
-#include "ListaAsteroids.h"
+#include "Game.h"
 
 #define PI 3.14159265
 
@@ -28,11 +24,11 @@ int esat::main(int argc, char **argv) {
 	
 	asteroides = CrearLista();
 	asteroid asteroide1;
-	Init_asteroid(&asteroide1);
+	Init_asteroid(&asteroide1,1);
 	asteroid asteroide2;
-	Init_asteroid(&asteroide2);
+	Init_asteroid(&asteroide2,1);
 	asteroid asteroide3;
-	Init_asteroid(&asteroide3);
+	Init_asteroid(&asteroide3,1);
 	printf("hola");
 	InsertarLista(&asteroides,asteroide1);
 	printf("hola1");

@@ -1,5 +1,4 @@
 #include <esat/math.h>
-
 #include <math.h>
 
 struct Mat2 { float d[4]; };

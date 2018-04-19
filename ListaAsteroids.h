@@ -1,7 +1,4 @@
 #include "asteroids.h"
-#include <stdlib.h>
-#include <esat/input.h>
-
 
 
 struct NodoAsteroid{
@@ -90,13 +87,6 @@ void MostrarLista(NodoAsteroid *Lista){
 	printf("\n");
 }
 
-void BorrarAst(NodoAsteroid **Lista){
-	NodoAsteroid *aux = *Lista;
-	aux = aux->nextNodo;
-	if(esat::IsSpecialKeyDown(esat::kSpecialKey_Space))
-		EliminarNodo(aux,Lista);
-}
-
 void MoveAsteroids(NodoAsteroid **Lista){
 	NodoAsteroid *aux = *Lista;
 	
@@ -111,16 +101,4 @@ void MoveAsteroids(NodoAsteroid **Lista){
 	printf("\n");
 }
 
-void AsteroidsLimits(NodoAsteroid **Lista){
-	NodoAsteroid *aux = *Lista;
-	
-	if(EsvaciaLista(aux))
-		printf("Lista Vacia\n");
-	
-	while(aux != NULL){
-		UpdatePos(&(aux->val));
-		aux = aux -> nextNodo;
-	}	
-	
-	printf("\n");
-}
+

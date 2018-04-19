@@ -1,32 +1,29 @@
-#include "asteroids.h"
-#include <stdlib.h>
-#include <esat/input.h>
+#include "disparo.h"
 
 
-
-struct NodoAsteroid{
-	asteroid val;
-	NodoAsteroid *nextNodo = NULL;
-	NodoAsteroid *prevNodo = NULL;
+struct NodoDisparo{
+	disparo val;
+	NodoDisparo *nextNodo = NULL;
+	NodoDisparo *prevNodo = NULL;
 };
 
 
-NodoAsteroid* CrearLista(void){
+NodoDisparo* CrearLista(void){
 	return NULL;
 }
 
-bool EsvaciaLista(NodoAsteroid *Lista){
+bool EsvaciaLista(NodoDisparo *Lista){
 	if(Lista == NULL)
 		return true;
 	else
 		return false;
 }
 
-void EliminarNodo(NodoAsteroid *Nodo, NodoAsteroid **Lista){
+void EliminarNodo(NodoDisparo *Nodo, NodoDisparo **Lista){
 	
 	if(!EsvaciaLista(*Lista)&& Nodo != NULL){
-		NodoAsteroid *nextNodo = Nodo->nextNodo;
-		NodoAsteroid *prevNodo = Nodo->prevNodo;
+		NodoDisparo *nextNodo = Nodo->nextNodo;
+		NodoDisparo *prevNodo = Nodo->prevNodo;
 		if(prevNodo == NULL && nextNodo == NULL){
 			free(Nodo);
 			*Lista = NULL;
@@ -48,8 +45,8 @@ void EliminarNodo(NodoAsteroid *Nodo, NodoAsteroid **Lista){
 	
 }
 
-void BorrarLista(NodoAsteroid **Lista){
-	NodoAsteroid *auxNodo = NULL;
+void BorrarLista(NodoDisparo **Lista){
+	NodoDisparo *auxNodo = NULL;
 	while(!EsvaciaLista(*Lista)){
 		auxNodo = *Lista;
 		*Lista = auxNodo -> nextNodo;
@@ -58,8 +55,8 @@ void BorrarLista(NodoAsteroid **Lista){
 }
 
 
-void InsertarLista(NodoAsteroid **Lista, asteroid val){
-	NodoAsteroid *Nodo = (NodoAsteroid*)malloc(sizeof(NodoAsteroid));
+void InsertarLista(NodoDisparo **Lista, asteroid val){
+	NodoDisparo *Nodo = (NodoDisparo*)malloc(sizeof(NodoDisparo));
 	printf("h1");
 	Nodo -> val = val;
 	Nodo -> prevNodo = NULL;
@@ -75,30 +72,23 @@ void InsertarLista(NodoAsteroid **Lista, asteroid val){
 	}
 }
 
-void MostrarLista(NodoAsteroid *Lista){
-	NodoAsteroid *aux = Lista;
+void MostrarLista(NodoDisparo *Lista){
+	NodoDisparo *aux = Lista;
 	
 	if(EsvaciaLista(aux))
 		printf("Lista Vacia\n");
 	
 	while(aux != NULL){
 		printf("pepe");
-		Draw_asteroid(&(aux->val));
+		Draw_shot(&(aux->val));
 		aux = aux -> nextNodo;
 	}	
 	
 	printf("\n");
 }
 
-void BorrarAst(NodoAsteroid **Lista){
-	NodoAsteroid *aux = *Lista;
-	aux = aux->nextNodo;
-	if(esat::IsSpecialKeyDown(esat::kSpecialKey_Space))
-		EliminarNodo(aux,Lista);
-}
-
-void MoveAsteroids(NodoAsteroid **Lista){
-	NodoAsteroid *aux = *Lista;
+void MoveDisparos(NodoDisparo **Lista){
+	NodoDisparo *aux = *Lista;
 	
 	if(EsvaciaLista(aux))
 		printf("Lista Vacia\n");
@@ -111,16 +101,4 @@ void MoveAsteroids(NodoAsteroid **Lista){
 	printf("\n");
 }
 
-void AsteroidsLimits(NodoAsteroid **Lista){
-	NodoAsteroid *aux = *Lista;
-	
-	if(EsvaciaLista(aux))
-		printf("Lista Vacia\n");
-	
-	while(aux != NULL){
-		UpdatePos(&(aux->val));
-		aux = aux -> nextNodo;
-	}	
-	
-	printf("\n");
-}
+
