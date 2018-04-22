@@ -1,3 +1,4 @@
+#pragma once
 #include <esat/window.h>
 #include <esat/input.h>
 #include <esat/time.h>
@@ -13,6 +14,7 @@
 ship Nave;	
 
 NodoAsteroid *asteroides = NULL;
+NodoDisparo *disparos = NULL;
 	
 int esat::main(int argc, char **argv) {
 	
@@ -22,7 +24,8 @@ int esat::main(int argc, char **argv) {
 	unsigned int fps=60;
 	esat::WindowInit(800,600);
 	
-	asteroides = CrearLista();
+	asteroides = CrearListaAsteroide();
+	disparos = CrearListaDisparo();
 	asteroid asteroide1;
 	Init_asteroid(&asteroide1,1);
 	asteroid asteroide2;
@@ -51,17 +54,16 @@ int esat::main(int argc, char **argv) {
 		UpdateVdir(&Nave);
 		SpeedUp(&Nave);
 		BorrarAst(&asteroides);
-		
-		
-		
+		Disparo(&disparos,&Nave);
+		MoveDisparos(&disparos);
+		MostrarLista(disparos);
+		BorrarDsp(&disparos);
 		
 		UpdatePos(&Nave);
 		MoveAsteroids(&asteroides);
 		
 		DrawShip(&Nave);
 		MostrarLista(asteroides);
-		
-		printf("%f,%f\n",Nave.v_force.x,Nave.v_force.y );
 		
 		esat::DrawEnd();
 		do{

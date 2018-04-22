@@ -1,6 +1,7 @@
+#pragma once
 #include <esat/draw.h>
-
 #include "Math_aux.h"
+#include "ships.h"
 
 
 struct disparo{
@@ -8,14 +9,14 @@ struct disparo{
 	esat::Vec2 v;
 };
 
-void Init_disparo(disparo *a, esat::Vec2 p, esat::Vec2 v){
-	a->pos = p;
-	a->v = v;
+void Init_disparo(disparo *a, ship *nave){
+	a->pos = nave->puntos_globales[0];
+	a->v = Vec2xScalar(nave->v_dir,5);
 }
 
 void Draw_shot(disparo *a){
 	
-	esat::Vec2 aux = Vec2minusVec2(a->pos,VecxScalar(Vec2Normalized(a->v),-3.f));
+	esat::Vec2 aux = Vec2minusVec2(a->pos,Vec2xScalar(Vec2Normalized(a->v),2.f));
 	esat::DrawLine(a->pos.x,a->pos.y,aux.x,aux.y);
 	
 }

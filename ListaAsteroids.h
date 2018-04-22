@@ -1,3 +1,4 @@
+#pragma once
 #include "asteroids.h"
 
 
@@ -8,7 +9,7 @@ struct NodoAsteroid{
 };
 
 
-NodoAsteroid* CrearLista(void){
+NodoAsteroid* CrearListaAsteroide(void){
 	return NULL;
 }
 

@@ -1,3 +1,4 @@
+#pragma once
 #include <esat/math.h>
 #include <math.h>
 

@@ -1,3 +1,4 @@
+#pragma once
 #include "Math_aux.h"
 
 struct ship{
@@ -79,8 +80,6 @@ void SpeedUp(ship *nave){
 	}		
 	
 }
-
-
 
 void UpdateVdir(ship *nave){
 	nave->v_dir = Vec2minusVec2(nave->puntos_globales[0],nave->pos);

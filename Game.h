@@ -1,14 +1,15 @@
+#pragma once
 #include "ListaDisparos.h"
 #include "ListaAsteroids.h"
 #include "ships.h"
 
 
-void Disparo(NodoDisparo *ListaDisparos, ship *nave){
+void Disparo(NodoDisparo **ListaDisparos, ship *nave){
 	
-	if(esat::IsSpecialKeyDown(esat::kSpecialKey_Keypad_1)){
+	if(esat::IsSpecialKeyDown(esat::kSpecialKey_Space)){
 		disparo newshot;
-		Init_disparo(&newshot,nave->puntos_globales[0],nave->v_dir);
-		InsertarLista(&ListaDisparos,newshot);
+		Init_disparo(&newshot,nave);
+		InsertarLista(ListaDisparos,newshot);
 	}
 	
 }
@@ -20,9 +21,16 @@ void BorrarDisparo(NodoDisparo *Lista){
 		EliminarNodo(aux,&Lista);
 }
 
-void BorrarAst(NodoAsteroid *Lista){
+void BorrarAst(NodoAsteroid **Lista){
 	NodoAsteroid *aux = *Lista;
-	aux = aux->nextNodo;
-	if(esat::IsSpecialKeyDown(esat::kSpecialKey_Space))
-		EliminarNodo(aux,&Lista);
+
+	if(esat::IsSpecialKeyDown(esat::kSpecialKey_Enter))
+		EliminarNodo(aux,Lista);
+}
+
+void BorrarDsp(NodoDisparo **Lista){
+	NodoDisparo *aux = *Lista;
+	
+	if(esat::IsSpecialKeyDown(esat::kSpecialKey_Keypad_1))
+		EliminarNodo(aux,Lista);
 }

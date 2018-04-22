@@ -19,7 +19,7 @@ namespace esat {
     kSpecialKey_Tab,
     kSpecialKey_Escape,
     kSpecialKey_Delete,
-	kSpecialKey_Backspace,
+	  kSpecialKey_Backspace,
     kSpecialKey_Up,
     kSpecialKey_Down,
     kSpecialKey_Right,

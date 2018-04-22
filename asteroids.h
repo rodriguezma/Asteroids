@@ -1,5 +1,5 @@
+#pragma once
 #include <esat/draw.h>
-
 #include "Math_aux.h"
 
 

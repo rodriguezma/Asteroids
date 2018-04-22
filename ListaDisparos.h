@@ -1,3 +1,4 @@
+#pragma once
 #include "disparo.h"
 
 
@@ -8,7 +9,7 @@ struct NodoDisparo{
 };
 
 
-NodoDisparo* CrearLista(void){
+NodoDisparo* CrearListaDisparo(void){
 	return NULL;
 }
 
@@ -55,7 +56,7 @@ void BorrarLista(NodoDisparo **Lista){
 }
 
 
-void InsertarLista(NodoDisparo **Lista, asteroid val){
+void InsertarLista(NodoDisparo **Lista, disparo val){
 	NodoDisparo *Nodo = (NodoDisparo*)malloc(sizeof(NodoDisparo));
 	printf("h1");
 	Nodo -> val = val;
