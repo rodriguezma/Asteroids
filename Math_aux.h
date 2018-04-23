@@ -3,6 +3,8 @@
 #include <math.h>
 
 struct Mat2 { float d[4]; };
+struct Er {float a,b,c; };
+struct poly{ esat::Vec2 *points; int vertices; };
 
 
 Mat2 RotateMat2 (float radians, int sentido){
@@ -83,6 +85,37 @@ esat::Vec2 Vec2Normalized(const esat::Vec2 &v){
 	
 }
 
+Er Vec2toEr(const esat::Vec2 &v, const esat::Vec2 &w){
+	
+	Er aux;
+	
+	aux.a = v.y - w.y;
+	aux.b = w.x - v.x;
+	aux.c = (w.y * v.x) - (v.y * w.x);
+	
+	return aux;
+}
 
+void InitPoly(poly *p, esat::Vec2 *points, int v){
+	p->points = points;
+	p->vertices = v;
+}
+
+bool TestDotEr(const esat::Vec2 &v, const Er &r){
+	if((r.a * v.x + r.b * v.y + r.c) >= 0)
+		return true;
+	else 
+		return false;
+}
+
+bool ColVec2Poly(const esat::Vec2 &d,poly p){
+	Er Eaux;
+	for(int i=0;i < p->vertices;i++){
+		Eaux = Vec2toEr(p->points[i],p->points[i+1]);
+		if(!TestDotEr(d,Eaux))
+			return false;
+	}
+	return true;
+}
 
 

@@ -34,3 +34,26 @@ void BorrarDsp(NodoDisparo **Lista){
 	if(esat::IsSpecialKeyDown(esat::kSpecialKey_Keypad_1))
 		EliminarNodo(aux,Lista);
 }
+
+void DivideAsteoroid(poly *p, asteroid *a){
+	switch(a->tipo){
+		case 0:
+			p->points = (esat::Vec2*)malloc(sizeof(esat::Vec2)*(p->vertices + 1));
+			p->points[0] = a->puntos_globales[0];
+			p->points[1] = a->puntos_globales[1];
+			p->points[2] = a->puntos_globales[2];
+			p->points[3] = a->puntos_globales[3];
+			p->points[4] = a->puntos_globales[0];
+		break;
+		case 1:
+		break;
+		case 2:
+		break;
+		case 3:
+		break;
+	}
+}
+
+void ColDotPoly(){
+	
+}

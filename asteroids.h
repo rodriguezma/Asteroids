@@ -10,6 +10,7 @@ struct asteroid{
 	esat::Vec2 v;
 	int vertices;
 	int size;
+	int tipo;
 
 };
 
@@ -90,7 +91,7 @@ void Init_asteroid(asteroid *a, int size){
 		
 	}
 	
-	
+	a->tipo = randAsteroid;
 	a->size = size;
 	a->pos = {(float)(rand()%700 + 50),(float)(rand()%500 + 50)};
 	a->v ={(float)(rand()%21 - 10), (float)(rand()%21 - 10)};
