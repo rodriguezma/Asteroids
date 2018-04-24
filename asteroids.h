@@ -17,6 +17,8 @@ struct asteroid{
 void Init_asteroid(asteroid *a, int size){
 	
 	int randAsteroid = rand()%4;
+
+	a->tipo = randAsteroid;
 	
 	switch(randAsteroid){
 		

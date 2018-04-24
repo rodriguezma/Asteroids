@@ -96,13 +96,9 @@ Er Vec2toEr(const esat::Vec2 &v, const esat::Vec2 &w){
 	return aux;
 }
 
-void InitPoly(poly *p, esat::Vec2 *points, int v){
-	p->points = points;
-	p->vertices = v;
-}
 
 bool TestDotEr(const esat::Vec2 &v, const Er &r){
-	if((r.a * v.x + r.b * v.y + r.c) >= 0)
+	if((r.a * v.x + r.b * v.y + r.c) <= 0)
 		return true;
 	else 
 		return false;
@@ -110,8 +106,8 @@ bool TestDotEr(const esat::Vec2 &v, const Er &r){
 
 bool ColVec2Poly(const esat::Vec2 &d,poly p){
 	Er Eaux;
-	for(int i=0;i < p->vertices;i++){
-		Eaux = Vec2toEr(p->points[i],p->points[i+1]);
+	for(int i=0;i < p.vertices;i++){
+		Eaux = Vec2toEr(p.points[i],p.points[i+1]);
 		if(!TestDotEr(d,Eaux))
 			return false;
 	}

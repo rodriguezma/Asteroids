@@ -59,6 +59,8 @@ int esat::main(int argc, char **argv) {
 		MostrarLista(disparos);
 		BorrarDsp(&disparos);
 		
+		ColShotAsteroids(&asteroides,&disparos);
+
 		UpdatePos(&Nave);
 		MoveAsteroids(&asteroides);
 		
