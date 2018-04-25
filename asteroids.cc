@@ -27,11 +27,11 @@ int esat::main(int argc, char **argv) {
 	asteroides = CrearListaAsteroide();
 	disparos = CrearListaDisparo();
 	asteroid asteroide1;
-	Init_asteroid(&asteroide1,1);
+	Init_asteroid(&asteroide1,20);
 	asteroid asteroide2;
-	Init_asteroid(&asteroide2,1);
+	Init_asteroid(&asteroide2,20);
 	asteroid asteroide3;
-	Init_asteroid(&asteroide3,1);
+	Init_asteroid(&asteroide3,20);
 	printf("hola");
 	InsertarLista(&asteroides,asteroide1);
 	printf("hola1");
@@ -53,17 +53,19 @@ int esat::main(int argc, char **argv) {
 		RotateShip(&Nave);
 		UpdateVdir(&Nave);
 		SpeedUp(&Nave);
-		BorrarAst(&asteroides);
+
 		Disparo(&disparos,&Nave);
 		MoveDisparos(&disparos);
-		MostrarLista(disparos);
-		BorrarDsp(&disparos);
-		
-		ColShotAsteroids(&asteroides,&disparos);
-
-		UpdatePos(&Nave);
 		MoveAsteroids(&asteroides);
+		UpdatePos(&Nave);
 		
+		ColShipAsteroids(&Nave, &asteroides);
+		ColShotAsteroids(&asteroides,&disparos);
+		DeadTimeShots(&disparos);
+		
+		
+		
+		MostrarLista(disparos);
 		DrawShip(&Nave);
 		MostrarLista(asteroides);
 		

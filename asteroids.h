@@ -101,7 +101,7 @@ void Init_asteroid(asteroid *a, int size){
 }
 
 void Draw_asteroid(asteroid *a){
-	esat::Mat3 t = esat::Mat3Scale(20,20);
+	esat::Mat3 t = esat::Mat3Scale(a->size,a->size);
 	t = esat::Mat3Multiply(esat::Mat3Translate(a->pos.x,a->pos.y),t);
 	
 	for (int i=0;i<a->vertices;i++){

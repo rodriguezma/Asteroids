@@ -1,5 +1,6 @@
 #pragma once
 #include <esat/draw.h>
+#include <esat/time.h>
 #include "Math_aux.h"
 #include "ships.h"
 
@@ -7,11 +8,13 @@
 struct disparo{
 	esat::Vec2 pos;
 	esat::Vec2 v;
+	double time;
 };
 
 void Init_disparo(disparo *a, ship *nave){
 	a->pos = nave->puntos_globales[0];
 	a->v = Vec2xScalar(nave->v_dir,8);
+	a->time = esat::Time();
 }
 
 void Draw_shot(disparo *a){
@@ -30,3 +33,4 @@ void UpdatePos(disparo *a){
 	a->pos.x = (int)a->pos.x%800;
 	a->pos.y = (int)a->pos.y%600;	
 }
+

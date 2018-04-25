@@ -15,7 +15,7 @@ struct ship{
 };
 
 void InitShip(ship *nave){
-	nave->pos = {500.f,300.f};
+	nave->pos = {400.f,300.f};
 	nave->ShipRads = 0.f;
 	nave->v_dir = {0.f,0.f};
 	nave->v = 0.f;
@@ -25,15 +25,22 @@ void InitShip(ship *nave){
 	
 }
 
+void DrawFire(ship *nave){
+	esat::Vec2 fire[4];
+	fire[0] = nave->puntos_globales[2];
+	fire[1] = nave->puntos_globales[3];
+	fire[2] = Vec2minusVec2(nave->pos, Vec2xScalar(nave->v_dir, 20.f));
+	fire[3] = nave->puntos_globales[2];
+	esat::DrawPath(&fire[0].x,4);
+}
+
 void DrawShip(ship *nave){
-	esat::Mat3 t = esat::Mat3Scale(5,5);
-	t = esat::Mat3Multiply(t, esat::Mat3Rotate(nave->ShipRads));
-	t = esat::Mat3Multiply(esat::Mat3Translate(nave->pos.x,nave->pos.y),t);
 	
-	for (int i=0;i<6;i++){
-		nave->puntos_globales[i] = esat::Mat3TransformVec2(t,nave->puntos_locales[i]);
-	}
 	esat::DrawPath(&(nave->puntos_globales[0].x),6);
+	
+	if(esat::IsSpecialKeyPressed(esat::kSpecialKey_Up)){
+		DrawFire(nave);
+	}
 }
 
 void RotateShip(ship *nave){
@@ -58,6 +65,8 @@ esat::Vec2 DecreseVforce(esat::Vec2 &v,float f){
 
 }
 
+
+
 void SpeedUp(ship *nave){
 	if(esat::IsSpecialKeyPressed(esat::kSpecialKey_Up)){
 		if (nave->SpeedUp<3){
@@ -69,6 +78,7 @@ void SpeedUp(ship *nave){
 
 		CheckVforce(nave);
 		nave->friction = 0.0001;
+	
 	}else{
 		nave->friction = nave->friction * 1.2;
 		if(nave->friction > 1)
@@ -88,6 +98,8 @@ void UpdateVdir(ship *nave){
 }
 
 void UpdatePos(ship *nave){
+	
+	
 	nave->pos = Vec2plusVec2(nave->pos,Vec2xScalar(nave->v_force,0.7));
 	if(nave->pos.x<0)
 		nave->pos.x = 800 + nave->pos.x;
@@ -95,7 +107,16 @@ void UpdatePos(ship *nave){
 		nave->pos.y = 600 + nave->pos.y;
 	nave->pos.x = (int)nave->pos.x%800;
 	nave->pos.y = (int)nave->pos.y%600;	
+	
+	esat::Mat3 t = esat::Mat3Scale(5,5);
+	t = esat::Mat3Multiply(t, esat::Mat3Rotate(nave->ShipRads));
+	t = esat::Mat3Multiply(esat::Mat3Translate(nave->pos.x,nave->pos.y),t);
+	
+	for (int i=0;i<6;i++){
+		nave->puntos_globales[i] = esat::Mat3TransformVec2(t,nave->puntos_locales[i]);
+	}
 }
+
 
 
 

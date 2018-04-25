@@ -174,19 +174,33 @@ bool TestColPolys(NodoPoly *p, esat::Vec2 v){
 
 }
 
+void DivideAsteroidCol(NodoAsteroid **a,int size,esat::Vec2 pos){
+	asteroid a1,a2;
+	Init_asteroid(&a1,size);
+	Init_asteroid(&a2,size);
+	a1.pos = pos;
+	a2.pos = pos;
+	InsertarLista(a,a1);
+	InsertarLista(a,a2);
+}
+
 void ColShotAsteroids(NodoAsteroid **a, NodoDisparo **d){
 	
 	NodoDisparo *auxd = *d;
 	NodoDisparo *auxd2 = NULL;
 	NodoAsteroid *auxa = *a;
 	NodoPoly *p = NULL;
+
 	while(auxd != NULL){
 		auxd2 = auxd->nextNodo;
+		auxa = *a;
 		while(auxa != NULL){
 
 			DivideAsteoroid(&p, &(auxa->val));
-			printf("holaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
 			if(TestColPolys( p, auxd->val.pos)){
+				printf("-------------------------");
+				if(auxa->val.size>5)
+					DivideAsteroidCol(a,auxa->val.size/2,auxa->val.pos);
 				EliminarNodo(auxa,a);
 				EliminarNodo(auxd,d);
 			}
@@ -196,4 +210,47 @@ void ColShotAsteroids(NodoAsteroid **a, NodoDisparo **d){
 		auxd = auxd2;
 	}
 }
+
+void DeadTimeShots(NodoDisparo **d){
+	
+	NodoDisparo *auxd = *d;
+	NodoDisparo *auxd2 = NULL;
+	
+	while(auxd != NULL){
+		auxd2 = auxd->nextNodo;
+		if((auxd->val.time + 1500) < esat::Time()){
+			EliminarNodo(auxd,d);
+		}
+		auxd = auxd2;
+	}
+	
+}
+
+void ColShipAsteroids(ship *nave, NodoAsteroid **a){
+	NodoAsteroid *auxa = *a; 
+	NodoPoly *p = NULL;
+	esat::Vec2 ColShip[] = {{nave->puntos_globales[0]},{nave->puntos_globales[1]},{nave->puntos_globales[4]}};
+	int i;
+	bool col = false;
+	while(auxa != NULL){
+		col = false;
+		i = 0;
+		DivideAsteoroid(&p,&(auxa->val));
+		while(col == false && i<3){
+			if(TestColPolys(p,ColShip[i])){
+				col = true;
+				if(auxa->val.size>5)
+					DivideAsteroidCol(a,auxa->val.size/2,auxa->val.pos);
+				EliminarNodo(auxa,a);
+				InitShip(nave);
+			}
+			BorrarLista(&p);
+			i++;
+		}
+		
+	auxa = auxa->nextNodo;	
+	}
+}
+
+
 
