@@ -32,9 +32,9 @@ int esat::main(int argc, char **argv) {
 	Init_asteroid(&asteroide2,20);
 	asteroid asteroide3;
 	Init_asteroid(&asteroide3,20);
-	printf("hola");
+
 	InsertarLista(&asteroides,asteroide1);
-	printf("hola1");
+
 	InsertarLista(&asteroides,asteroide2);
 	InsertarLista(&asteroides,asteroide3);
 

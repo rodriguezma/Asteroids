@@ -58,7 +58,6 @@ void BorrarLista(NodoPoly **Lista){
 
 void InsertarLista(NodoPoly **Lista, poly val){
 	NodoPoly *Nodo = (NodoPoly*)malloc(sizeof(NodoPoly));
-	printf("h1");
 	Nodo -> val = val;
 	Nodo -> prevNodo = NULL;
 	

@@ -37,6 +37,7 @@ void BorrarDsp(NodoDisparo **Lista){
 }
 
 void DivideAsteoroid(NodoPoly **p, asteroid *a){
+
 	switch(a->tipo){
 		case 0:
 			poly p1;
@@ -161,10 +162,11 @@ void DivideAsteoroid(NodoPoly **p, asteroid *a){
 	}
 }
 
-bool TestColPolys(NodoPoly *p, esat::Vec2 v){
-	NodoPoly *aux = p;
+bool TestColPolys(NodoPoly **p, esat::Vec2 v){
+	NodoPoly *aux = *p;
 	
 	while(aux != NULL){
+	
 		if(ColVec2Poly(v,aux->val))
 			return true;
 		aux = aux->nextNodo;
@@ -190,24 +192,29 @@ void ColShotAsteroids(NodoAsteroid **a, NodoDisparo **d){
 	NodoDisparo *auxd2 = NULL;
 	NodoAsteroid *auxa = *a;
 	NodoPoly *p = NULL;
+	bool col = false;
 
 	while(auxd != NULL){
-		auxd2 = auxd->nextNodo;
+		col = false;
 		auxa = *a;
-		while(auxa != NULL){
+		while(auxa != NULL && col == false){
 
 			DivideAsteoroid(&p, &(auxa->val));
-			if(TestColPolys( p, auxd->val.pos)){
-				printf("-------------------------");
+			if(TestColPolys( &p, auxd->val.pos)){
+				col = true;
 				if(auxa->val.size>5)
 					DivideAsteroidCol(a,auxa->val.size/2,auxa->val.pos);
+				auxd2 = auxd;
+				auxd = auxd->nextNodo;
 				EliminarNodo(auxa,a);
-				EliminarNodo(auxd,d);
+				EliminarNodo(auxd2,d);
 			}
 			BorrarLista(&p);
 			auxa = auxa->nextNodo;
+			
 		}
-		auxd = auxd2;
+		if(col == false)
+			auxd = auxd->nextNodo;
 	}
 }
 
@@ -227,29 +234,45 @@ void DeadTimeShots(NodoDisparo **d){
 }
 
 void ColShipAsteroids(ship *nave, NodoAsteroid **a){
-	NodoAsteroid *auxa = *a; 
+	NodoAsteroid *auxa = *a;
+	NodoAsteroid *auxa2 = NULL;
+	
 	NodoPoly *p = NULL;
-	esat::Vec2 ColShip[] = {{nave->puntos_globales[0]},{nave->puntos_globales[1]},{nave->puntos_globales[4]}};
+	esat::Vec2 *ColShip = (esat::Vec2*)malloc(sizeof(esat::Vec2)*3);
+	ColShip[0] = {nave->puntos_globales[0]};
+	ColShip[1] = {nave->puntos_globales[1]};
+	ColShip[2] = {nave->puntos_globales[4]};
+	
+	esat::Vec2 colDot;
+
 	int i;
 	bool col = false;
 	while(auxa != NULL){
 		col = false;
 		i = 0;
-		DivideAsteoroid(&p,&(auxa->val));
+		
 		while(col == false && i<3){
-			if(TestColPolys(p,ColShip[i])){
+			DivideAsteoroid(&p,&(auxa->val));
+			colDot = ColShip[i];
+			if(TestColPolys(&p,colDot)){
 				col = true;
 				if(auxa->val.size>5)
 					DivideAsteroidCol(a,auxa->val.size/2,auxa->val.pos);
-				EliminarNodo(auxa,a);
+				auxa2 = auxa;
+				auxa = auxa->nextNodo;
+				EliminarNodo(auxa2,a);
 				InitShip(nave);
 			}
 			BorrarLista(&p);
 			i++;
+			
+
 		}
-		
-	auxa = auxa->nextNodo;	
+	
+		if(col == false)
+			auxa = auxa->nextNodo;	
 	}
+	
 }
 
 

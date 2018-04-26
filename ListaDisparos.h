@@ -58,7 +58,7 @@ void BorrarLista(NodoDisparo **Lista){
 
 void InsertarLista(NodoDisparo **Lista, disparo val){
 	NodoDisparo *Nodo = (NodoDisparo*)malloc(sizeof(NodoDisparo));
-	printf("h1");
+
 	Nodo -> val = val;
 	Nodo -> prevNodo = NULL;
 	
@@ -75,31 +75,23 @@ void InsertarLista(NodoDisparo **Lista, disparo val){
 
 void MostrarLista(NodoDisparo *Lista){
 	NodoDisparo *aux = Lista;
-	
-	if(EsvaciaLista(aux))
-		printf("Lista Vacia\n");
-	
+
 	while(aux != NULL){
-		printf("pepe");
 		Draw_shot(&(aux->val));
 		aux = aux -> nextNodo;
 	}	
-	
-	printf("\n");
+
 }
 
 void MoveDisparos(NodoDisparo **Lista){
 	NodoDisparo *aux = *Lista;
 	
-	if(EsvaciaLista(aux))
-		printf("Lista Vacia\n");
-	
+
 	while(aux != NULL){
 		UpdatePos(&(aux->val));
 		aux = aux -> nextNodo;
 	}	
-	
-	printf("\n");
+
 }
 
 

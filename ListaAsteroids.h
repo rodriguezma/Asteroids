@@ -58,7 +58,7 @@ void BorrarLista(NodoAsteroid **Lista){
 
 void InsertarLista(NodoAsteroid **Lista, asteroid val){
 	NodoAsteroid *Nodo = (NodoAsteroid*)malloc(sizeof(NodoAsteroid));
-	printf("h1");
+	
 	Nodo -> val = val;
 	Nodo -> prevNodo = NULL;
 	
@@ -76,30 +76,26 @@ void InsertarLista(NodoAsteroid **Lista, asteroid val){
 void MostrarLista(NodoAsteroid *Lista){
 	NodoAsteroid *aux = Lista;
 	
-	if(EsvaciaLista(aux))
-		printf("Lista Vacia\n");
+	
 	
 	while(aux != NULL){
-		printf("pepe");
+	
 		Draw_asteroid(&(aux->val));
 		aux = aux -> nextNodo;
 	}	
 	
-	printf("\n");
+
 }
 
 void MoveAsteroids(NodoAsteroid **Lista){
 	NodoAsteroid *aux = *Lista;
-	
-	if(EsvaciaLista(aux))
-		printf("Lista Vacia\n");
+
 	
 	while(aux != NULL){
 		UpdatePos(&(aux->val));
 		aux = aux -> nextNodo;
 	}	
-	
-	printf("\n");
+
 }
 
 

@@ -13,7 +13,11 @@ struct ship{
 	float friction;
 
 };
-
+/*
+struct EnemyShip{
+	
+};
+*/
 void InitShip(ship *nave){
 	nave->pos = {400.f,300.f};
 	nave->ShipRads = 0.f;
