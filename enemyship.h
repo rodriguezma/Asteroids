@@ -30,7 +30,7 @@ void InitShip(EnemyShip *nave){
 		
 	}
 	nave->v = 3.f;
-	nave->size = rand()%5+5;
+	nave->size = rand()%3+4;
 	nave->live = true;
 }
 

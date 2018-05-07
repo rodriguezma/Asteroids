@@ -332,8 +332,53 @@ void Disparo(NodoDisparo **ListaDisparos, EnemyShip *enemiga, ship *nave){
 			InsertarLista(ListaDisparos,newshot);
 		}
 	}
-	
-	
+}
+
+void ColShipEnemy(EnemyShip *enemiga, ship *nave){
+	if(enemiga->live){
+		NodoAsteroid *auxa = *a;
+		NodoAsteroid *auxa2 = NULL;
+		
+		NodoPoly *p = NULL;
+		esat::Vec2 *ColShip = (esat::Vec2*)malloc(sizeof(esat::Vec2)*6);
+		ColShip[0] = {nave->puntos_globales[0]};
+		ColShip[1] = {nave->puntos_globales[2]};
+		ColShip[2] = {nave->puntos_globales[3]};
+		ColShip[3] = {nave->puntos_globales[4]};
+		ColShip[4] = {nave->puntos_globales[5]};
+		ColShip[5] = {nave->puntos_globales[7]};
+		
+		esat::Vec2 colDot;
+
+		int i;
+		bool col = false;
+		while(auxa != NULL){
+			col = false;
+			i = 0;
+			
+			while(col == false && i<6){
+				DivideAsteoroid(&p,&(auxa->val));
+				colDot = ColShip[i];
+				if(TestColPolys(&p,colDot)){
+					col = true;
+					nave->live = false;
+					if(auxa->val.size>5)
+						DivideAsteroidCol(a,auxa->val.size/2,auxa->val.pos);
+					auxa2 = auxa;
+					auxa = auxa->nextNodo;
+					EliminarNodo(auxa2,a);
+					
+				}
+				BorrarLista(&p);
+				i++;
+				
+
+			}
+		
+			if(col == false)
+				auxa = auxa->nextNodo;	
+		}
+	}
 }
 
 
