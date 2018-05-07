@@ -12,9 +12,10 @@
 #define PI 3.14159265
 
 ship Nave;	
-
+EnemyShip NaveEnemiga;
 NodoAsteroid *asteroides = NULL;
 NodoDisparo *disparos = NULL;
+NodoDisparo *disparos_enemigos = NULL;
 	
 int esat::main(int argc, char **argv) {
 	
@@ -26,20 +27,21 @@ int esat::main(int argc, char **argv) {
 	
 	asteroides = CrearListaAsteroide();
 	disparos = CrearListaDisparo();
+	disparos_enemigos = CrearListaDisparo();
 	asteroid asteroide1;
 	Init_asteroid(&asteroide1,20);
 	asteroid asteroide2;
 	Init_asteroid(&asteroide2,20);
 	asteroid asteroide3;
 	Init_asteroid(&asteroide3,20);
-
+	InitShip(&NaveEnemiga);
 	InsertarLista(&asteroides,asteroide1);
 
 	InsertarLista(&asteroides,asteroide2);
 	InsertarLista(&asteroides,asteroide3);
 
 	
-	
+	InitShip(&NaveEnemiga);
 	InitShip(&Nave);
 	WindowSetMouseVisibility(true);
 	
@@ -53,19 +55,25 @@ int esat::main(int argc, char **argv) {
 		RotateShip(&Nave);
 		UpdateVdir(&Nave);
 		SpeedUp(&Nave);
-
+		UpdateState(&NaveEnemiga);
+		UpdateDir(&NaveEnemiga);
 		Disparo(&disparos,&Nave);
+		Disparo(&disparos_enemigos,&NaveEnemiga,&Nave);
 		MoveDisparos(&disparos);
+		MoveDisparos(&disparos_enemigos);
 		MoveAsteroids(&asteroides);
 		UpdatePos(&Nave);
-		
+		UpdatePos(&NaveEnemiga);
+		ColEnemyAsteroids(&NaveEnemiga, &asteroides);
 		ColShipAsteroids(&Nave, &asteroides);
 		ColShotAsteroids(&asteroides,&disparos);
+		ColShotAsteroids(&asteroides,&disparos_enemigos);
 		DeadTimeShots(&disparos);
+		DeadTimeShots(&disparos_enemigos);
 		
-		
-		
+		DrawShip(&NaveEnemiga);
 		MostrarLista(disparos);
+		MostrarLista(disparos_enemigos);
 		DrawShip(&Nave);
 		MostrarLista(asteroides);
 		

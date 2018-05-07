@@ -3,6 +3,7 @@
 #include <esat/time.h>
 #include "Math_aux.h"
 #include "ships.h"
+#include "enemyship.h"
 
 
 struct disparo{
@@ -14,6 +15,13 @@ struct disparo{
 void Init_disparo(disparo *a, ship *nave){
 	a->pos = nave->puntos_globales[0];
 	a->v = Vec2xScalar(nave->v_dir,8);
+	a->time = esat::Time();
+}
+void Init_disparo(disparo *a, EnemyShip *nave, esat::Vec2 v){
+	a->pos = nave->pos;
+	a->v = Vec2minusVec2(v,nave->pos);
+	a->v = Vec2Normalized(a->v);
+	a->v = Vec2xScalar(a->v,8);
 	a->time = esat::Time();
 }
 
