@@ -56,7 +56,7 @@ int esat::main(int argc, char **argv) {
 		UpdateVdir(&Nave);
 		SpeedUp(&Nave);
 		UpdateState(&NaveEnemiga);
-		UpdateDir(&NaveEnemiga);
+		//UpdateDir(&NaveEnemiga);
 		Disparo(&disparos,&Nave);
 		Disparo(&disparos_enemigos,&NaveEnemiga,&Nave);
 		MoveDisparos(&disparos);
@@ -64,7 +64,7 @@ int esat::main(int argc, char **argv) {
 		MoveAsteroids(&asteroides);
 		UpdatePos(&Nave);
 		UpdatePos(&NaveEnemiga);
-		ColEnemyAsteroids(&NaveEnemiga, &asteroides);
+		//ColEnemyAsteroids(&NaveEnemiga, &asteroides);
 		ColShipAsteroids(&Nave, &asteroides);
 		ColShotAsteroids(&asteroides,&disparos);
 		ColShotAsteroids(&asteroides,&disparos_enemigos);

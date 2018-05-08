@@ -349,18 +349,18 @@ void ColShipEnemy(EnemyShip *enemiga, ship *nave){
 		
 		p.points = (esat::Vec2*)malloc(sizeof(esat::Vec2)*7);
 		p.points[0] = enemiga->puntos_globales[0];
-		p.points[1] = enemiga->puntos_globales[2];
-		p.points[2] = enemiga->puntos_globales[3];
+		p.points[1] = enemiga->puntos_globales[7];
+		p.points[2] = enemiga->puntos_globales[5];
 		p.points[3] = enemiga->puntos_globales[4];
-		p.points[4] = enemiga->puntos_globales[5];
-		p.points[5] = enemiga->puntos_globales[7];
+		p.points[4] = enemiga->puntos_globales[3];
+		p.points[5] = enemiga->puntos_globales[2];
 		p.points[6] = enemiga->puntos_globales[0];
 		p.vertices = 6;
 		
-		InsertarLista(&Lp,p);
+		
 		
 		while(col == false && i<3){
-			if(TestColPolys(&Lp,ColShip[i])){
+			if(ColVec2Poly(ColShip[i], p)){
 				col = true;
 				InitShip(nave);
 				enemiga->live = false;
