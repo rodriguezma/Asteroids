@@ -99,7 +99,7 @@ Er Vec2toEr(const esat::Vec2 &v, const esat::Vec2 &w){
 
 bool TestDotEr(esat::Vec2 v, Er r){
 
-	if((r.a * v.x + r.b * v.y + r.c) <= 0)
+	if((r.a * v.x + r.b * v.y + r.c) >= 0)
 		return true;
 	else 
 		return false;

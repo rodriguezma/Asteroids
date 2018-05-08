@@ -336,38 +336,32 @@ void Disparo(NodoDisparo **ListaDisparos, EnemyShip *enemiga, ship *nave){
 
 void ColShipEnemy(EnemyShip *enemiga, ship *nave){
 	
-	if(enemiga->live == true){
+	if(enemiga->live){
+		
 		bool col = false;
 		int i = 0;
-		NodoPoly *Lp = NULL;
-		esat::Vec2 *ColShip = (esat::Vec2*)malloc(sizeof(esat::Vec2)*3);
-		ColShip[0] = nave->puntos_globales[0];
-		ColShip[1] = nave->puntos_globales[1];
-		ColShip[2] = nave->puntos_globales[4];
+
 		
 		poly p;
-		
-		p.points = (esat::Vec2*)malloc(sizeof(esat::Vec2)*7);
+		p.points = NULL;
+		p.points = (esat::Vec2*)malloc(sizeof(esat::Vec2)*4);
 		p.points[0] = enemiga->puntos_globales[0];
-		p.points[1] = enemiga->puntos_globales[7];
-		p.points[2] = enemiga->puntos_globales[5];
-		p.points[3] = enemiga->puntos_globales[4];
-		p.points[4] = enemiga->puntos_globales[3];
-		p.points[5] = enemiga->puntos_globales[2];
-		p.points[6] = enemiga->puntos_globales[0];
-		p.vertices = 6;
+		p.points[1] = enemiga->puntos_globales[4];
+		p.points[2] = enemiga->puntos_globales[1];
+		p.points[0] = enemiga->puntos_globales[0];
+		p.vertices = 3;
+	
 		
-		
-		
-		while(col == false && i<3){
-			if(ColVec2Poly(ColShip[i], p)){
+		while(!col && i<8){
+			
+			if (ColVec2Poly(enemiga->puntos_globales[i],p)){
 				col = true;
 				InitShip(nave);
 				enemiga->live = false;
 			}
 			i++;
+
 		}
-		
 	}
 }
 
