@@ -51,7 +51,7 @@ int esat::main(int argc, char **argv) {
 		esat::DrawBegin();
 	    esat::DrawClear(0,0,0);
 		esat::DrawSetStrokeColor(255,255,255);
-		
+				
 		RotateShip(&Nave);
 		UpdateVdir(&Nave);
 		SpeedUp(&Nave);
@@ -68,6 +68,7 @@ int esat::main(int argc, char **argv) {
 		ColShipAsteroids(&Nave, &asteroides);
 		ColShotAsteroids(&asteroides,&disparos);
 		ColShotAsteroids(&asteroides,&disparos_enemigos);
+		ColShipEnemy(&NaveEnemiga,&Nave);
 		DeadTimeShots(&disparos);
 		DeadTimeShots(&disparos_enemigos);
 		

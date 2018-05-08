@@ -284,12 +284,12 @@ void ColEnemyAsteroids(EnemyShip *nave, NodoAsteroid **a){
 		
 		NodoPoly *p = NULL;
 		esat::Vec2 *ColShip = (esat::Vec2*)malloc(sizeof(esat::Vec2)*6);
-		ColShip[0] = {nave->puntos_globales[0]};
-		ColShip[1] = {nave->puntos_globales[2]};
-		ColShip[2] = {nave->puntos_globales[3]};
-		ColShip[3] = {nave->puntos_globales[4]};
-		ColShip[4] = {nave->puntos_globales[5]};
-		ColShip[5] = {nave->puntos_globales[7]};
+		ColShip[0] = nave->puntos_globales[0];
+		ColShip[1] = nave->puntos_globales[2];
+		ColShip[2] = nave->puntos_globales[3];
+		ColShip[3] = nave->puntos_globales[4];
+		ColShip[4] = nave->puntos_globales[5];
+		ColShip[5] = nave->puntos_globales[7];
 		
 		esat::Vec2 colDot;
 
@@ -335,51 +335,43 @@ void Disparo(NodoDisparo **ListaDisparos, EnemyShip *enemiga, ship *nave){
 }
 
 void ColShipEnemy(EnemyShip *enemiga, ship *nave){
-	if(enemiga->live){
-		NodoAsteroid *auxa = *a;
-		NodoAsteroid *auxa2 = NULL;
-		
-		NodoPoly *p = NULL;
-		esat::Vec2 *ColShip = (esat::Vec2*)malloc(sizeof(esat::Vec2)*6);
-		ColShip[0] = {nave->puntos_globales[0]};
-		ColShip[1] = {nave->puntos_globales[2]};
-		ColShip[2] = {nave->puntos_globales[3]};
-		ColShip[3] = {nave->puntos_globales[4]};
-		ColShip[4] = {nave->puntos_globales[5]};
-		ColShip[5] = {nave->puntos_globales[7]};
-		
-		esat::Vec2 colDot;
-
-		int i;
+	
+	if(enemiga->live == true){
 		bool col = false;
-		while(auxa != NULL){
-			col = false;
-			i = 0;
-			
-			while(col == false && i<6){
-				DivideAsteoroid(&p,&(auxa->val));
-				colDot = ColShip[i];
-				if(TestColPolys(&p,colDot)){
-					col = true;
-					nave->live = false;
-					if(auxa->val.size>5)
-						DivideAsteroidCol(a,auxa->val.size/2,auxa->val.pos);
-					auxa2 = auxa;
-					auxa = auxa->nextNodo;
-					EliminarNodo(auxa2,a);
-					
-				}
-				BorrarLista(&p);
-				i++;
-				
-
-			}
+		int i = 0;
+		NodoPoly *Lp = NULL;
+		esat::Vec2 *ColShip = (esat::Vec2*)malloc(sizeof(esat::Vec2)*3);
+		ColShip[0] = nave->puntos_globales[0];
+		ColShip[1] = nave->puntos_globales[1];
+		ColShip[2] = nave->puntos_globales[4];
 		
-			if(col == false)
-				auxa = auxa->nextNodo;	
+		poly p;
+		
+		p.points = (esat::Vec2*)malloc(sizeof(esat::Vec2)*7);
+		p.points[0] = enemiga->puntos_globales[0];
+		p.points[1] = enemiga->puntos_globales[2];
+		p.points[2] = enemiga->puntos_globales[3];
+		p.points[3] = enemiga->puntos_globales[4];
+		p.points[4] = enemiga->puntos_globales[5];
+		p.points[5] = enemiga->puntos_globales[7];
+		p.points[6] = enemiga->puntos_globales[0];
+		p.vertices = 6;
+		
+		InsertarLista(&Lp,p);
+		
+		while(col == false && i<3){
+			if(TestColPolys(&Lp,ColShip[i])){
+				col = true;
+				InitShip(nave);
+				enemiga->live = false;
+			}
+			i++;
 		}
+		
 	}
 }
+
+
 
 
 

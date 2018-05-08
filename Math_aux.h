@@ -98,6 +98,7 @@ Er Vec2toEr(const esat::Vec2 &v, const esat::Vec2 &w){
 
 
 bool TestDotEr(esat::Vec2 v, Er r){
+
 	if((r.a * v.x + r.b * v.y + r.c) <= 0)
 		return true;
 	else 
@@ -105,9 +106,10 @@ bool TestDotEr(esat::Vec2 v, Er r){
 }
 
 bool ColVec2Poly(esat::Vec2 d,poly p){
-	//printf("%f, %f\n",d->x,d->y);
+	
 	Er Eaux;
 	for(int i=0;i < p.vertices;i++){
+		
 		Eaux = Vec2toEr(p.points[i],p.points[i+1]);
 		if(!TestDotEr(d,Eaux))
 			return false;

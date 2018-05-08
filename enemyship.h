@@ -31,7 +31,7 @@ void InitShip(EnemyShip *nave){
 	}
 	nave->v = 3.f;
 	nave->size = rand()%3+4;
-	nave->live = true;
+	nave->live = false;
 }
 
 void DrawShip(EnemyShip *nave){
@@ -68,6 +68,7 @@ void UpdateState(EnemyShip *nave){
 	if(!nave->live){
 		if(rand()%1000 < 2){
 			InitShip(nave);
+			nave->live = true;
 		}
 	}
 }
