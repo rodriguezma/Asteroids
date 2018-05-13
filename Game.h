@@ -4,7 +4,7 @@
 #include "ListaPolys.h"
 #include "ships.h"
 #include "enemyship.h"
-
+#include "stats.h"
 
 void Disparo(NodoDisparo **ListaDisparos, ship *nave){
 	
@@ -187,7 +187,7 @@ void DivideAsteroidCol(NodoAsteroid **a,int size,esat::Vec2 pos){
 	InsertarLista(a,a2);
 }
 
-void ColShotAsteroids(NodoAsteroid **a, NodoDisparo **d){
+void ColShotAsteroids(NodoAsteroid **a, NodoDisparo **d, ship *nave){
 	
 	NodoDisparo *auxd = *d;
 	NodoDisparo *auxd2 = NULL;
@@ -203,6 +203,17 @@ void ColShotAsteroids(NodoAsteroid **a, NodoDisparo **d){
 			DivideAsteoroid(&p, &(auxa->val));
 			if(TestColPolys( &p, auxd->val.pos)){
 				col = true;
+				switch(auxa->val.size){
+					case 20:
+						nave->puntuacion += 20;
+						break;
+					case 10:
+						nave->puntuacion += 50;
+						break;
+					case 5:
+						nave->puntuacion += 100;
+						break;
+				}
 				if(auxa->val.size>5)
 					DivideAsteroidCol(a,auxa->val.size/2,auxa->val.pos);
 				auxd2 = auxd;
@@ -340,21 +351,35 @@ void ColShipEnemy(EnemyShip *enemiga, ship *nave){
 		
 		bool col = false;
 		int i = 0;
-
+		NodoPoly *p = NULL;		
 		
-		poly p;
-		p.points = NULL;
-		p.points = (esat::Vec2*)malloc(sizeof(esat::Vec2)*4);
-		p.points[0] = enemiga->puntos_globales[0];
-		p.points[1] = enemiga->puntos_globales[4];
-		p.points[2] = enemiga->puntos_globales[1];
-		p.points[0] = enemiga->puntos_globales[0];
-		p.vertices = 3;
-	
+		poly p1;
+		p1.points = NULL;
+		p1.points = (esat::Vec2*)malloc(sizeof(esat::Vec2)*5);
+		p1.points[0] = enemiga->puntos_globales[0];
+		p1.points[1] = enemiga->puntos_globales[1];
+		p1.points[2] = enemiga->puntos_globales[6];
+		p1.points[3] = enemiga->puntos_globales[7];
+		p1.points[4] = enemiga->puntos_globales[0];
+		p1.vertices = 4;
+		InsertarLista(&p,p1);
 		
-		while(!col && i<8){
+		poly p2;
+		p2.points = NULL;
+		p2.points = (esat::Vec2*)malloc(sizeof(esat::Vec2)*7);
+		p2.points[0] = enemiga->puntos_globales[1];
+		p2.points[1] = enemiga->puntos_globales[2];
+		p2.points[2] = enemiga->puntos_globales[3];
+		p2.points[3] = enemiga->puntos_globales[4];
+		p2.points[4] = enemiga->puntos_globales[5];
+		p2.points[5] = enemiga->puntos_globales[6];
+		p2.points[6] = enemiga->puntos_globales[1];
+		p2.vertices = 6;
+		InsertarLista(&p,p2);
+		
+		while(!col && i<5){
 			
-			if (ColVec2Poly(enemiga->puntos_globales[i],p)){
+			if (TestColPolys(&p,nave->puntos_globales[i])){
 				col = true;
 				InitShip(nave);
 				enemiga->live = false;
@@ -365,6 +390,98 @@ void ColShipEnemy(EnemyShip *enemiga, ship *nave){
 	}
 }
 
+void ColShotEnemy(EnemyShip *enemiga, NodoDisparo **d, ship *nave){
+	if(enemiga->live) {
+		NodoDisparo *auxd = *d;
+		NodoPoly *p = NULL;
+		bool col = false;
+		
+		poly p1;
+		p1.points = NULL;
+		p1.points = (esat::Vec2*)malloc(sizeof(esat::Vec2)*5);
+		p1.points[0] = enemiga->puntos_globales[0];
+		p1.points[1] = enemiga->puntos_globales[1];
+		p1.points[2] = enemiga->puntos_globales[6];
+		p1.points[3] = enemiga->puntos_globales[7];
+		p1.points[4] = enemiga->puntos_globales[0];
+		p1.vertices = 4;
+		InsertarLista(&p,p1);
+		
+		poly p2;
+		p2.points = NULL;
+		p2.points = (esat::Vec2*)malloc(sizeof(esat::Vec2)*7);
+		p2.points[0] = enemiga->puntos_globales[1];
+		p2.points[1] = enemiga->puntos_globales[2];
+		p2.points[2] = enemiga->puntos_globales[3];
+		p2.points[3] = enemiga->puntos_globales[4];
+		p2.points[4] = enemiga->puntos_globales[5];
+		p2.points[5] = enemiga->puntos_globales[6];
+		p2.points[6] = enemiga->puntos_globales[1];
+		p2.vertices = 6;
+		InsertarLista(&p,p2);
+
+		while(col == false && auxd != NULL){
+			
+			if(TestColPolys( &p, auxd->val.pos)){
+				col = true;
+				EliminarNodo(auxd,d);
+				nave->puntuacion += 200;
+				enemiga->live = false;		
+			}
+			auxd = auxd->nextNodo;
+		}
+		BorrarLista(&p);
+	}
+	
+}
+
+void ColShotShip(ship *nave, NodoDisparo **d){
+
+	NodoDisparo *auxd = *d;
+	NodoPoly *p = NULL;
+	bool col = false;
+	
+	poly p1;
+	p1.points = NULL;
+	p1.points = (esat::Vec2*)malloc(sizeof(esat::Vec2)*4);
+	p1.points[0] = nave->puntos_globales[0];
+	p1.points[1] = nave->puntos_globales[1];
+	p1.points[2] = nave->puntos_globales[2];
+	p1.points[3] = nave->puntos_globales[0];
+	p1.vertices = 3;
+	InsertarLista(&p,p1);
+	
+	poly p2;
+	p2.points = NULL;
+	p2.points = (esat::Vec2*)malloc(sizeof(esat::Vec2)*4);
+	p2.points[0] = nave->puntos_globales[0];
+	p2.points[1] = nave->puntos_globales[2];
+	p2.points[2] = nave->puntos_globales[3];
+	p2.points[3] = nave->puntos_globales[0];
+	p2.vertices = 3;
+	InsertarLista(&p,p2);
+
+	poly p3;
+	p3.points = NULL;
+	p3.points = (esat::Vec2*)malloc(sizeof(esat::Vec2)*4);
+	p3.points[0] = nave->puntos_globales[0];
+	p3.points[1] = nave->puntos_globales[3];
+	p3.points[2] = nave->puntos_globales[4];
+	p3.points[3] = nave->puntos_globales[0];
+	p3.vertices = 3;
+	InsertarLista(&p,p3);
+
+	while(col == false && auxd != NULL){
+		
+		if(TestColPolys( &p, auxd->val.pos)){
+			col = true;
+			InitShip(nave);
+			EliminarNodo(auxd,d);	
+		}
+		auxd = auxd->nextNodo;
+	}
+	BorrarLista(&p);	
+}
 
 
 

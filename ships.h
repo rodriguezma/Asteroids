@@ -11,13 +11,15 @@ struct ship{
 	float v;
 	float SpeedUp;
 	float friction;
+	int puntuacion;
+	int level;
+};
 
-};
-/*
-struct EnemyShip{
-	
-};
-*/
+void InitGame(ship *nave){
+	nave->puntuacion = 0;
+	nave->level = 0;
+}
+
 void InitShip(ship *nave){
 	nave->pos = {400.f,300.f};
 	nave->ShipRads = 0.f;

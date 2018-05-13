@@ -35,6 +35,7 @@ int esat::main(int argc, char **argv) {
 	asteroid asteroide3;
 	Init_asteroid(&asteroide3,20);
 	InitShip(&NaveEnemiga);
+	InitGame(&Nave);
 	InsertarLista(&asteroides,asteroide1);
 
 	InsertarLista(&asteroides,asteroide2);
@@ -66,9 +67,11 @@ int esat::main(int argc, char **argv) {
 		UpdatePos(&NaveEnemiga);
 		ColEnemyAsteroids(&NaveEnemiga, &asteroides);
 		ColShipAsteroids(&Nave, &asteroides);
-		ColShotAsteroids(&asteroides,&disparos);
+		ColShotAsteroids(&asteroides,&disparos,&Nave);
 		ColShotAsteroids(&asteroides,&disparos_enemigos);
 		ColShipEnemy(&NaveEnemiga,&Nave);
+		ColShotEnemy(&NaveEnemiga,&disparos,&Nave);
+		ColShotShip(&Nave,&disparos_enemigos);
 		DeadTimeShots(&disparos);
 		DeadTimeShots(&disparos_enemigos);
 		UpdateState(&NaveEnemiga);
