@@ -230,6 +230,38 @@ void ColShotAsteroids(NodoAsteroid **a, NodoDisparo **d, ship *nave){
 	}
 }
 
+void ColShotAsteroids(NodoAsteroid **a, NodoDisparo **d){
+	
+	NodoDisparo *auxd = *d;
+	NodoDisparo *auxd2 = NULL;
+	NodoAsteroid *auxa = *a;
+	NodoPoly *p = NULL;
+	bool col = false;
+
+	while(auxd != NULL){
+		col = false;
+		auxa = *a;
+		while(auxa != NULL && col == false){
+
+			DivideAsteoroid(&p, &(auxa->val));
+			if(TestColPolys( &p, auxd->val.pos)){
+				col = true;
+				if(auxa->val.size>5)
+					DivideAsteroidCol(a,auxa->val.size/2,auxa->val.pos);
+				auxd2 = auxd;
+				auxd = auxd->nextNodo;
+				EliminarNodo(auxa,a);
+				EliminarNodo(auxd2,d);
+			}
+			BorrarLista(&p);
+			auxa = auxa->nextNodo;
+			
+		}
+		if(col == false)
+			auxd = auxd->nextNodo;
+	}
+}
+
 void DeadTimeShots(NodoDisparo **d){
 	
 	NodoDisparo *auxd = *d;
