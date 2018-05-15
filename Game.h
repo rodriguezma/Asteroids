@@ -5,6 +5,7 @@
 #include "ships.h"
 #include "enemyship.h"
 #include "stats.h"
+#include "Ui.h"
 
 void Disparo(NodoDisparo **ListaDisparos, ship *nave){
 	
@@ -187,7 +188,7 @@ void DivideAsteroidCol(NodoAsteroid **a,int size,esat::Vec2 pos){
 	InsertarLista(a,a2);
 }
 
-void ColShotAsteroids(NodoAsteroid **a, NodoDisparo **d, ship *nave){
+void ColShotAsteroids(NodoAsteroid **a, NodoDisparo **d, Stats *stats){
 	
 	NodoDisparo *auxd = *d;
 	NodoDisparo *auxd2 = NULL;
@@ -205,13 +206,13 @@ void ColShotAsteroids(NodoAsteroid **a, NodoDisparo **d, ship *nave){
 				col = true;
 				switch(auxa->val.size){
 					case 20:
-						nave->puntuacion += 20;
+						stats->puntuacion += 20;
 						break;
 					case 10:
-						nave->puntuacion += 50;
+						stats->puntuacion += 50;
 						break;
 					case 5:
-						nave->puntuacion += 100;
+						stats->puntuacion += 100;
 						break;
 				}
 				if(auxa->val.size>5)
@@ -277,7 +278,7 @@ void DeadTimeShots(NodoDisparo **d){
 	
 }
 
-void ColShipAsteroids(ship *nave, NodoAsteroid **a){
+void ColShipAsteroids(ship *nave, NodoAsteroid **a, Stats *stats){
 	NodoAsteroid *auxa = *a;
 	NodoAsteroid *auxa2 = NULL;
 	
@@ -306,6 +307,7 @@ void ColShipAsteroids(ship *nave, NodoAsteroid **a){
 				auxa = auxa->nextNodo;
 				EliminarNodo(auxa2,a);
 				InitShip(nave);
+				stats->lives -=1;
 			}
 			BorrarLista(&p);
 			i++;
@@ -377,7 +379,7 @@ void Disparo(NodoDisparo **ListaDisparos, EnemyShip *enemiga, ship *nave){
 	}
 }
 
-void ColShipEnemy(EnemyShip *enemiga, ship *nave){
+void ColShipEnemy(EnemyShip *enemiga, ship *nave, Stats *stats){
 	
 	if(enemiga->live){
 		
@@ -415,6 +417,8 @@ void ColShipEnemy(EnemyShip *enemiga, ship *nave){
 				col = true;
 				InitShip(nave);
 				enemiga->live = false;
+				stats->lives -= 1;
+				
 			}
 			i++;
 
@@ -422,7 +426,7 @@ void ColShipEnemy(EnemyShip *enemiga, ship *nave){
 	}
 }
 
-void ColShotEnemy(EnemyShip *enemiga, NodoDisparo **d, ship *nave){
+void ColShotEnemy(EnemyShip *enemiga, NodoDisparo **d, Stats *stats){
 	if(enemiga->live) {
 		NodoDisparo *auxd = *d;
 		NodoPoly *p = NULL;
@@ -457,7 +461,7 @@ void ColShotEnemy(EnemyShip *enemiga, NodoDisparo **d, ship *nave){
 			if(TestColPolys( &p, auxd->val.pos)){
 				col = true;
 				EliminarNodo(auxd,d);
-				nave->puntuacion += 200;
+				stats->puntuacion += 200;
 				enemiga->live = false;		
 			}
 			auxd = auxd->nextNodo;
@@ -467,7 +471,7 @@ void ColShotEnemy(EnemyShip *enemiga, NodoDisparo **d, ship *nave){
 	
 }
 
-void ColShotShip(ship *nave, NodoDisparo **d){
+void ColShotShip(ship *nave, NodoDisparo **d, Stats *stats){
 
 	NodoDisparo *auxd = *d;
 	NodoPoly *p = NULL;
@@ -508,7 +512,8 @@ void ColShotShip(ship *nave, NodoDisparo **d){
 		if(TestColPolys( &p, auxd->val.pos)){
 			col = true;
 			InitShip(nave);
-			EliminarNodo(auxd,d);	
+			EliminarNodo(auxd,d);
+			stats->lives -= 1;
 		}
 		auxd = auxd->nextNodo;
 	}

@@ -9,15 +9,69 @@
 #include <time.h>
 #include "Game.h"
 
+
 #define PI 3.14159265
 
-ship Nave;	
-EnemyShip NaveEnemiga;
-NodoAsteroid *asteroides = NULL;
-NodoDisparo *disparos = NULL;
-NodoDisparo *disparos_enemigos = NULL;
+	Stats stats;
+	ship Nave;	
+	EnemyShip NaveEnemiga;
+	NodoAsteroid *asteroides = NULL;
+	NodoDisparo *disparos = NULL;
+	NodoDisparo *disparos_enemigos = NULL;
 	
+
+void MainMenu(int *GameState){
+	PrintMainMenu();
+	DetectColMenu(&GameState);
+}
+
+void GameLoop(void){
+		RotateShip(&Nave);
+		UpdateVdir(&Nave);
+		SpeedUp(&Nave);
+		UpdateDir(&NaveEnemiga);
+		Disparo(&disparos,&Nave);
+		Disparo(&disparos_enemigos,&NaveEnemiga,&Nave);
+		MoveDisparos(&disparos);
+		MoveDisparos(&disparos_enemigos);
+		MoveAsteroids(&asteroides);
+		UpdatePos(&Nave);
+		UpdatePos(&NaveEnemiga);
+		ColEnemyAsteroids(&NaveEnemiga, &asteroides);
+		ColShipAsteroids(&Nave, &asteroides, &stats);
+		ColShotAsteroids(&asteroides,&disparos,&stats);
+		ColShotAsteroids(&asteroides,&disparos_enemigos);
+		ColShipEnemy(&NaveEnemiga,&Nave,&stats);
+		ColShotEnemy(&NaveEnemiga,&disparos,&stats);
+		ColShotShip(&Nave,&disparos_enemigos,&stats);
+		DeadTimeShots(&disparos);
+		DeadTimeShots(&disparos_enemigos);
+		UpdateState(&NaveEnemiga);
+		DrawShip(&NaveEnemiga);
+		MostrarLista(disparos);
+		MostrarLista(disparos_enemigos);
+		DrawShip(&Nave);
+		MostrarLista(asteroides);
+		PrintUi(&stats, &Nave);
+}
+
+void MainLoop(int *GameState){
+	switch(*GameState){
+		case 0:
+			MainMenu(&GameState);
+			break;
+		case 1:
+			GameLoop();
+			break;
+		case 2:
+			break;
+	}	
+}
+
+
 int esat::main(int argc, char **argv) {
+	
+	int GameState = 0;
 	
 	srand(time(NULL));
 	
@@ -36,6 +90,7 @@ int esat::main(int argc, char **argv) {
 	Init_asteroid(&asteroide3,20);
 	InitShip(&NaveEnemiga);
 	InitGame(&Nave);
+	InitStats(&stats);
 	InsertarLista(&asteroides,asteroide1);
 
 	InsertarLista(&asteroides,asteroide2);
@@ -45,6 +100,8 @@ int esat::main(int argc, char **argv) {
 	InitShip(&NaveEnemiga);
 	InitShip(&Nave);
 	WindowSetMouseVisibility(true);
+	esat::DrawSetTextFont("Diner-Regular.ttf");
+	esat::DrawSetTextSize(30);
 	
 
 	while(esat::WindowIsOpened() && !esat::IsSpecialKeyDown(esat::kSpecialKey_Escape)) {
@@ -52,34 +109,9 @@ int esat::main(int argc, char **argv) {
 		esat::DrawBegin();
 	    esat::DrawClear(0,0,0);
 		esat::DrawSetStrokeColor(255,255,255);
+		esat::DrawSetFillColor(255,255,255);
 				
-		RotateShip(&Nave);
-		UpdateVdir(&Nave);
-		SpeedUp(&Nave);
-		
-		UpdateDir(&NaveEnemiga);
-		Disparo(&disparos,&Nave);
-		Disparo(&disparos_enemigos,&NaveEnemiga,&Nave);
-		MoveDisparos(&disparos);
-		MoveDisparos(&disparos_enemigos);
-		MoveAsteroids(&asteroides);
-		UpdatePos(&Nave);
-		UpdatePos(&NaveEnemiga);
-		ColEnemyAsteroids(&NaveEnemiga, &asteroides);
-		ColShipAsteroids(&Nave, &asteroides);
-		ColShotAsteroids(&asteroides,&disparos,&Nave);
-		ColShotAsteroids(&asteroides,&disparos_enemigos);
-		ColShipEnemy(&NaveEnemiga,&Nave);
-		ColShotEnemy(&NaveEnemiga,&disparos,&Nave);
-		ColShotShip(&Nave,&disparos_enemigos);
-		DeadTimeShots(&disparos);
-		DeadTimeShots(&disparos_enemigos);
-		UpdateState(&NaveEnemiga);
-		DrawShip(&NaveEnemiga);
-		MostrarLista(disparos);
-		MostrarLista(disparos_enemigos);
-		DrawShip(&Nave);
-		MostrarLista(asteroides);
+		MainLoop(&GameState);
 		
 		esat::DrawEnd();
 		do{
