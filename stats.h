@@ -4,6 +4,15 @@ struct Stats{
 	int lives;
 };
 
+struct bd{
+	char user[50]="";
+	char password[50]="";
+	char name[50]="";
+	char subname[50]="";
+	char country[50]="";
+	int puntuacion_maxima = 0;
+}
+
 void InitStats(Stats *player){
 	player->puntuacion = 0;
 	player->level = 0;

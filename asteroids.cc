@@ -8,7 +8,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include "Game.h"
-
+#include "bbdd.h"
 
 #define PI 3.14159265
 
@@ -18,12 +18,8 @@
 	NodoAsteroid *asteroides = NULL;
 	NodoDisparo *disparos = NULL;
 	NodoDisparo *disparos_enemigos = NULL;
-	
-
-void MainMenu(int *GameState){
-	PrintMainMenu();
-	DetectColMenu(&GameState);
-}
+	sqlite3 *db;
+	bd user;
 
 void GameLoop(void){
 		RotateShip(&Nave);
@@ -58,13 +54,16 @@ void GameLoop(void){
 void MainLoop(int *GameState){
 	switch(*GameState){
 		case 0:
-			MainMenu(&GameState);
+			PrintMainMenu(GameState);
 			break;
 		case 1:
-			GameLoop();
+			PrintLoginMenu(GameState);
 			break;
 		case 2:
+		PrintRegisterMenu(GameState);
 			break;
+		case 3:
+			GameLoop();
 	}	
 }
 
@@ -92,10 +91,9 @@ int esat::main(int argc, char **argv) {
 	InitGame(&Nave);
 	InitStats(&stats);
 	InsertarLista(&asteroides,asteroide1);
-
 	InsertarLista(&asteroides,asteroide2);
 	InsertarLista(&asteroides,asteroide3);
-
+	sqlite3_open("asteroids.db", &db);
 	
 	InitShip(&NaveEnemiga);
 	InitShip(&Nave);
@@ -119,6 +117,6 @@ int esat::main(int argc, char **argv) {
 	    }while((current_time-last_time)<=1000.0/fps);
 	    esat::WindowFrame();
 	}
-	
+	sqlite3_close(db);
 	return 0;
 }
