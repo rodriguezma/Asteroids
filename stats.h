@@ -1,8 +1,11 @@
+#pragma once
+
 struct Stats{
-	int puntuacion;
-	int level;
-	int lives;
+	int puntuacion=0;
+	int level=0;
+	int lives=3;
 };
+
 
 struct bd{
 	char user[50]="";
@@ -11,10 +14,11 @@ struct bd{
 	char subname[50]="";
 	char country[50]="";
 	int puntuacion_maxima = 0;
-}
+};
 
 void InitStats(Stats *player){
 	player->puntuacion = 0;
 	player->level = 0;
 	player->lives = 3;
 }
+

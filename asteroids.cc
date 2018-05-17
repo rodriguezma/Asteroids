@@ -9,6 +9,7 @@
 #include <time.h>
 #include "Game.h"
 #include "bbdd.h"
+#include "stats.h"
 
 #define PI 3.14159265
 
@@ -51,16 +52,16 @@ void GameLoop(void){
 		PrintUi(&stats, &Nave);
 }
 
-void MainLoop(int *GameState){
+void MainLoop(int *GameState, bd *bduser, int *campo){
 	switch(*GameState){
 		case 0:
 			PrintMainMenu(GameState);
 			break;
 		case 1:
-			PrintLoginMenu(GameState);
+			PrintLoginMenu(GameState,bduser,campo);
 			break;
 		case 2:
-		PrintRegisterMenu(GameState);
+			PrintRegisterMenu(GameState,bduser,campo,db);
 			break;
 		case 3:
 			GameLoop();
@@ -71,6 +72,7 @@ void MainLoop(int *GameState){
 int esat::main(int argc, char **argv) {
 	
 	int GameState = 0;
+	int Campo = 0;
 	
 	srand(time(NULL));
 	
@@ -109,7 +111,7 @@ int esat::main(int argc, char **argv) {
 		esat::DrawSetStrokeColor(255,255,255);
 		esat::DrawSetFillColor(255,255,255);
 				
-		MainLoop(&GameState);
+		MainLoop(&GameState,&user, &Campo);
 		
 		esat::DrawEnd();
 		do{
