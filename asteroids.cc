@@ -58,7 +58,7 @@ void MainLoop(int *GameState, bd *bduser, int *campo){
 			PrintMainMenu(GameState);
 			break;
 		case 1:
-			PrintLoginMenu(GameState,bduser,campo);
+			PrintLoginMenu(GameState,bduser,campo,db);
 			break;
 		case 2:
 			PrintRegisterMenu(GameState,bduser,campo,db);
