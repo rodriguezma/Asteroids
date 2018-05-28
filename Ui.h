@@ -101,7 +101,23 @@ void PrintLoginMenu(int *GameState, bd *b, int *campo){
 			b->password[strlen(b->password)] = esat::GetNextPressedKey();
 			break;
 	}
+	
+	 string sql;
 
+	sql = "INSERT INTO USUARIOS (Nickname,Name,Password,Country,Subname) VALUES ('";
+	sql += b->user;
+	sql += "', '";
+	sql += b->name;
+	sql += "', '";
+	sql += b->password;
+	sql +="', '";
+	sql += b->country;
+	sql += "', '";
+	sql += b->subname;
+	sql += "' );"; 
+
+	cn = sql.c_str();
+	printf("%s\n",cn);
 
 	esat::DrawPath(&(nick[0].x),5);
 	esat::DrawPath(&(pass[0].x),5);	
@@ -115,10 +131,11 @@ void PrintLoginMenu(int *GameState, bd *b, int *campo){
 
 bool InsertToDateBase(bd *b, sqlite3 *db){
    char *zErrMsg = 0;
+   const char *cn;
    int rc;
    string sql;
 
-	sql = "INSERT INTO COMPANY (Nickname,Name,Password,Country,Subname) VALUES ('";
+	sql = "INSERT INTO USUARIOS (Nickname,Name,Password,Country,Subname) VALUES ('";
 	sql += b->user;
 	sql += "', '";
 	sql += b->name;
@@ -130,7 +147,10 @@ bool InsertToDateBase(bd *b, sqlite3 *db){
 	sql += b->subname;
 	sql += "' );"; 
 	
-	rc = sqlite3_exec(db, sql, callback, 0, &zErrMsg);
+	cn = sql.c_str();
+	printf("%s\n",cn);
+	
+	rc = sqlite3_exec(db, cn, callback, 0, &zErrMsg);
 
 	if( rc != SQLITE_OK ){
       	return false;
