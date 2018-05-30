@@ -78,7 +78,7 @@ void MainLoop(int *GameState, bd *bduser, int *campo){
 			*GameState = 3;
 			break;
 		case 5:
-			PrintWinMenu(GameState,&stats);
+			PrintWinMenu(GameState,&stats,bduser,db);
 			break;			
 	}	
 }

@@ -302,7 +302,32 @@ void PrintGameOverMenu(int *GameState){
 			
 }
 
-void PrintWinMenu(int *GameState, Stats *stats){
+void UpdateDateBase(bd *b, sqlite3 *db, Stats *stats){
+   char *zErrMsg = 0;
+   const char *cn;
+   int rc;
+   string sql;
+   char buffer[50];
+   itoa(stats->puntuacion,buffer,10);
+
+   sql = "UPDATE Usuarios SET HighScore = ";
+	sql += buffer;
+	sql += " WHERE HighScore < ";
+	sql += buffer;
+	sql += " AND Nickname = '";
+	sql += b->user;
+	sql += "';";
+	
+	
+	cn = sql.c_str();
+	printf("%s\n",cn);
+	
+	rc = sqlite3_exec(db, cn, callback, 0, &zErrMsg);
+      
+}
+
+void PrintWinMenu(int *GameState, Stats *stats, bd *bduser, sqlite3 *bd){
+	bool actualizado = false;
 	esat::Vec2 MousePos = {(float)esat::MousePositionX(),(float)esat::MousePositionY()};
 	char buffer[50];
 	esat::Vec2 mainmenu[]= {{320,370},{390,370},{390,400},{320,400},{320,370}};
@@ -316,6 +341,11 @@ void PrintWinMenu(int *GameState, Stats *stats){
 	esat::DrawSetTextSize(30);
 	esat::DrawText(320,400,"MAIN MENU");
 	esat::DrawText(320,440,"PLAY AGAIN");
+	
+	if(!actualizado){
+		actualizado = true;
+		UpdateDateBase(bduser,bd,stats);
+	}
 	
 
 	
