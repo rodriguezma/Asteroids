@@ -11,8 +11,6 @@ struct ship{
 	float v;
 	float SpeedUp;
 	float friction;
-	int puntuacion;
-	int level;
 	float invtime;
 	bool collisionable;
 };
