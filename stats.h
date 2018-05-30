@@ -22,3 +22,8 @@ void InitStats(Stats *player){
 	player->lives = 3;
 }
 
+void InitBd(bd *mybd){
+	bd aux;
+	*mybd = aux;
+}
+

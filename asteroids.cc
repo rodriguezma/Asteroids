@@ -23,40 +23,41 @@
 	bd user;
 
 void GameLoop(void){
-		RotateShip(&Nave);
-		UpdateVdir(&Nave);
-		SpeedUp(&Nave);
-		UpdateDir(&NaveEnemiga);
-		Disparo(&disparos,&Nave);
-		Disparo(&disparos_enemigos,&NaveEnemiga,&Nave);
-		MoveDisparos(&disparos);
-		MoveDisparos(&disparos_enemigos);
-		MoveAsteroids(&asteroides);
-		UpdatePos(&Nave);
-		UpdatePos(&NaveEnemiga);
-		ColEnemyAsteroids(&NaveEnemiga, &asteroides);
-		ColShipAsteroids(&Nave, &asteroides, &stats);
-		ColShotAsteroids(&asteroides,&disparos,&stats);
-		ColShotAsteroids(&asteroides,&disparos_enemigos);
-		ColShipEnemy(&NaveEnemiga,&Nave,&stats);
-		ColShotEnemy(&NaveEnemiga,&disparos,&stats);
-		ColShotShip(&Nave,&disparos_enemigos,&stats);
-		DeadTimeShots(&disparos);
-		DeadTimeShots(&disparos_enemigos);
-		UpdateState(&NaveEnemiga);
-		DrawShip(&NaveEnemiga);
-		MostrarLista(disparos);
-		MostrarLista(disparos_enemigos);
-		DrawShip(&Nave);
-		MostrarLista(asteroides);
-		PrintUi(&stats, &Nave);
+	UpdateColStatus(&Nave);
+	RotateShip(&Nave);
+	UpdateVdir(&Nave);
+	SpeedUp(&Nave);
+	UpdateDir(&NaveEnemiga);
+	Disparo(&disparos,&Nave);
+	Disparo(&disparos_enemigos,&NaveEnemiga,&Nave);
+	MoveDisparos(&disparos);
+	MoveDisparos(&disparos_enemigos);
+	MoveAsteroids(&asteroides);
+	UpdatePos(&Nave);
+	UpdatePos(&NaveEnemiga);
+	ColEnemyAsteroids(&NaveEnemiga, &asteroides);
+	ColShipAsteroids(&Nave, &asteroides, &stats);
+	ColShotAsteroids(&asteroides,&disparos,&stats);
+	ColShotAsteroids(&asteroides,&disparos_enemigos);
+	ColShipEnemy(&NaveEnemiga,&Nave,&stats);
+	ColShotEnemy(&NaveEnemiga,&disparos,&stats);
+	ColShotShip(&Nave,&disparos_enemigos,&stats);
+	DeadTimeShots(&disparos);
+	DeadTimeShots(&disparos_enemigos);
+	UpdateState(&NaveEnemiga);
+	DrawShip(&NaveEnemiga);
+	MostrarLista(disparos);
+	MostrarLista(disparos_enemigos);
+	DrawShip(&Nave);
+	MostrarLista(asteroides);
+	PrintUi(&stats, &Nave);
 }
 
 void MainLoop(int *GameState, bd *bduser, int *campo){
 
 	switch(*GameState){
 		case 0:
-			PrintMainMenu(GameState);
+			PrintMainMenu(GameState,bduser);
 			break;
 		case 1:
 			PrintLoginMenu(GameState,bduser,campo,db);
@@ -67,13 +68,18 @@ void MainLoop(int *GameState, bd *bduser, int *campo){
 		case 3:
 			GameLoop();
 			CheckDeath(GameState, &stats);
-
+			CheckWin(GameState, asteroides);
 			break;
 		case 4:
-			PrintGameOverMenu(GameState,&stats,asteroides);
+			PrintGameOverMenu(GameState);
 			break;
-		//case 5:
-			//PrintWinMenu(GameState);			
+		case 6:
+			InitGame(&Nave,&NaveEnemiga,&stats,&disparos, &disparos_enemigos,&asteroides);
+			*GameState = 3;
+			break;
+		case 5:
+			PrintWinMenu(GameState,&stats);
+			break;			
 	}	
 }
 
@@ -89,18 +95,11 @@ int esat::main(int argc, char **argv) {
 	unsigned int fps=60;
 	esat::WindowInit(800,600);
 	
-	asteroides = CrearListaAsteroide();
-	disparos = CrearListaDisparo();
-	disparos_enemigos = CrearListaDisparo();
 	
-	InitShip(&NaveEnemiga);
-	InitGame(&Nave);
-	InitStats(&stats);
-	InitAsteroids(&asteroides);
+
 	sqlite3_open("asteroids.db", &db);
 	
-	InitShip(&NaveEnemiga);
-	InitShip(&Nave);
+	
 	WindowSetMouseVisibility(true);
 	esat::DrawSetTextFont("Diner-Regular.ttf");
 	esat::DrawSetTextSize(30);

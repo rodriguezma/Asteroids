@@ -52,7 +52,7 @@ bool Col (esat::Vec2 *v, esat::Vec2 w){
 		return false;
 }
 
-void PrintMainMenu(int *GameState){
+void PrintMainMenu(int *GameState, bd *bduser){
 	esat::Vec2 MousePos = {(float)esat::MousePositionX(),(float)esat::MousePositionY()};
 
 	esat::DrawSetTextSize(50);
@@ -68,11 +68,17 @@ void PrintMainMenu(int *GameState){
 	esat::Vec2 reg[] = {{325,370},{395,370},{395,405},{325,405},{325,370}};
 	esat::DrawPath(&(reg[0].x),5);
 
-	if(Col(login,MousePos) && esat::MouseButtonDown(0))
+	if(Col(login,MousePos) && esat::MouseButtonDown(0)){
+		esat::ResetBufferdKeyInput();
+		InitBd(bduser);
 		*GameState = 1;
+	}
 
-	if(Col(reg,MousePos) && esat::MouseButtonDown(0))
+	if(Col(reg,MousePos) && esat::MouseButtonDown(0)){
+		esat::ResetBufferdKeyInput();
+		InitBd(bduser);
 		*GameState = 2;
+	}
 }
 
 bool CheckUser(bd *b, sqlite3 *db){
@@ -105,6 +111,7 @@ bool CheckUser(bd *b, sqlite3 *db){
 }
 
 void PrintLoginMenu(int *GameState, bd *b, int *campo, sqlite3 *bd){
+	
 	esat::Vec2 MousePos = {(float)esat::MousePositionX(),(float)esat::MousePositionY()};
 	esat::Vec2 play[]= {{315,370},{355,370},{355,400},{315,400},{315,370}};
 		
@@ -140,9 +147,16 @@ void PrintLoginMenu(int *GameState, bd *b, int *campo, sqlite3 *bd){
 
 	esat::DrawPath(&(play[0].x),5);
 
-	if(Col(play,MousePos) && esat::MouseButtonDown(0))
+	if(Col(play,MousePos) && esat::MouseButtonDown(0)){
 		if(CheckUser(b,bd))
-			*GameState = 3;
+			*GameState = 6;
+		else{
+			InitBd(b);
+			esat::ResetBufferdKeyInput();
+		}
+	}
+		
+
 }
 
 
@@ -179,7 +193,9 @@ bool InsertToDateBase(bd *b, sqlite3 *db){
 
 
 void PrintRegisterMenu(int *GameState, bd *b, int *campo, sqlite3 *bd){
+
 	esat::Vec2 MousePos = {(float)esat::MousePositionX(),(float)esat::MousePositionY()};
+
 
 	esat::DrawSetTextSize(30);
 	esat::DrawText(300,200,"NICKNAME:");
@@ -245,12 +261,19 @@ void PrintRegisterMenu(int *GameState, bd *b, int *campo, sqlite3 *bd){
 
 
 	if(Col(play,MousePos) && esat::MouseButtonDown(0)){
-		if(InsertToDateBase(b,bd))
-			*GameState = 3;
+		if(InsertToDateBase(b,bd)){
+
+			*GameState = 6;
+		}else{
+			
+			InitBd(b);
+			esat::ResetBufferdKeyInput();
+		
+		}
 	}
 }
 
-void PrintGameOverMenu(int *GameState, Stats *stats, NodoAsteroid *asteroides){
+void PrintGameOverMenu(int *GameState){
 	esat::Vec2 MousePos = {(float)esat::MousePositionX(),(float)esat::MousePositionY()};
 	
 	esat::Vec2 mainmenu[]= {{320,370},{390,370},{390,400},{320,400},{320,370}};
@@ -261,19 +284,50 @@ void PrintGameOverMenu(int *GameState, Stats *stats, NodoAsteroid *asteroides){
 	esat::DrawSetTextSize(30);
 	esat::DrawText(320,400,"MAIN MENU");
 	esat::DrawText(320,440,"PLAY AGAIN");
-	BorrarLista(&asteroides);
-	InitStats(stats);
-	InitAsteroids(&asteroides);
+	
 	
 
 	
 	esat::DrawPath(&(mainmenu[0].x),5);	
 	esat::DrawPath(&(playagain[0].x),5);
 
-	if(Col(mainmenu,MousePos) && esat::MouseButtonDown(0))
+	if(Col(mainmenu,MousePos) && esat::MouseButtonDown(0)){
+
 		*GameState = 0;
+	}
 	else if(Col(playagain,MousePos) && esat::MouseButtonDown(0)){
-		*GameState = 3;
+		*GameState = 6;
+	}
+		
+			
+}
+
+void PrintWinMenu(int *GameState, Stats *stats){
+	esat::Vec2 MousePos = {(float)esat::MousePositionX(),(float)esat::MousePositionY()};
+	char buffer[50];
+	esat::Vec2 mainmenu[]= {{320,370},{390,370},{390,400},{320,400},{320,370}};
+	esat::Vec2 playagain[]= {{320,410},{390,410},{390,440},{320,440},{320,410}};
+		
+	esat::DrawSetTextSize(60);
+	esat::DrawText(300,200,"YOU WIN");
+	esat::DrawSetTextSize(40);
+	esat::DrawText(300,270,"SCORE: ");
+	esat::DrawText(360,270,itoa(stats->puntuacion,buffer,10));
+	esat::DrawSetTextSize(30);
+	esat::DrawText(320,400,"MAIN MENU");
+	esat::DrawText(320,440,"PLAY AGAIN");
+	
+
+	
+	esat::DrawPath(&(mainmenu[0].x),5);	
+	esat::DrawPath(&(playagain[0].x),5);
+
+	if(Col(mainmenu,MousePos) && esat::MouseButtonDown(0)){
+
+		*GameState = 0;
+	}
+	else if(Col(playagain,MousePos) && esat::MouseButtonDown(0)){
+		*GameState = 6;
 	}
 		
 			

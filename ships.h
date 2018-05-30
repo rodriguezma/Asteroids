@@ -13,12 +13,9 @@ struct ship{
 	float friction;
 	int puntuacion;
 	int level;
+	float invtime;
+	bool collisionable;
 };
-
-void InitGame(ship *nave){
-	nave->puntuacion = 0;
-	nave->level = 0;
-}
 
 void InitShip(ship *nave){
 	nave->pos = {400.f,300.f};
@@ -28,6 +25,8 @@ void InitShip(ship *nave){
 	nave->v_force = {0.f,0.f};
 	nave->SpeedUp = 0.f;
 	nave->friction = 0.f;
+	nave->invtime = esat::Time() + 3000;
+	nave->collisionable = false;
 	
 }
 
@@ -121,6 +120,11 @@ void UpdatePos(ship *nave){
 	for (int i=0;i<6;i++){
 		nave->puntos_globales[i] = esat::Mat3TransformVec2(t,nave->puntos_locales[i]);
 	}
+}
+
+void UpdateColStatus(ship *nave){
+	if(nave->invtime < esat::Time())
+		nave->collisionable = true;
 }
 
 
