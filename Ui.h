@@ -3,12 +3,12 @@ using namespace std;
 
 #include <iostream>
 #include <string.h>
-
 #include <esat/draw.h>
 #include <esat/math.h>
 #include "stats.h"
 #include "ships.h"
 #include "sqlite3.h"
+#include "ListaAsteroids.h"
 
 int nrows = 0;
 
@@ -248,5 +248,34 @@ void PrintRegisterMenu(int *GameState, bd *b, int *campo, sqlite3 *bd){
 		if(InsertToDateBase(b,bd))
 			*GameState = 3;
 	}
+}
+
+void PrintGameOverMenu(int *GameState, Stats *stats, NodoAsteroid *asteroides){
+	esat::Vec2 MousePos = {(float)esat::MousePositionX(),(float)esat::MousePositionY()};
+	
+	esat::Vec2 mainmenu[]= {{320,370},{390,370},{390,400},{320,400},{320,370}};
+	esat::Vec2 playagain[]= {{320,410},{390,410},{390,440},{320,440},{320,410}};
+		
+	esat::DrawSetTextSize(60);
+	esat::DrawText(300,200,"GAME OVER");
+	esat::DrawSetTextSize(30);
+	esat::DrawText(320,400,"MAIN MENU");
+	esat::DrawText(320,440,"PLAY AGAIN");
+	BorrarLista(&asteroides);
+	InitStats(stats);
+	InitAsteroids(&asteroides);
+	
+
+	
+	esat::DrawPath(&(mainmenu[0].x),5);	
+	esat::DrawPath(&(playagain[0].x),5);
+
+	if(Col(mainmenu,MousePos) && esat::MouseButtonDown(0))
+		*GameState = 0;
+	else if(Col(playagain,MousePos) && esat::MouseButtonDown(0)){
+		*GameState = 3;
+	}
+		
+			
 }
 

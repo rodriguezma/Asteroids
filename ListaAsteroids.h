@@ -98,4 +98,19 @@ void MoveAsteroids(NodoAsteroid **Lista){
 
 }
 
+void InitAsteroids(NodoAsteroid **Lista){
+
+	asteroid asteroide1;
+	Init_asteroid(&asteroide1,20);
+	asteroid asteroide2;
+	Init_asteroid(&asteroide2,20);
+	asteroid asteroide3;
+	Init_asteroid(&asteroide3,20);
+
+	InsertarLista(Lista,asteroide1);
+	InsertarLista(Lista,asteroide2);
+	InsertarLista(Lista,asteroide3);
+
+}
+
 

@@ -520,6 +520,13 @@ void ColShotShip(ship *nave, NodoDisparo **d, Stats *stats){
 	BorrarLista(&p);	
 }
 
+void CheckDeath(int *GameState, Stats *stats){
+	if(stats -> lives == 0)
+		*GameState = 4; 
+}
+
+
+
 
 
 

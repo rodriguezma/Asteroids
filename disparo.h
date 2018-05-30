@@ -6,7 +6,8 @@
 #include "enemyship.h"
 
 
-struct disparo{
+
+struct disparo{ 
 	esat::Vec2 pos;
 	esat::Vec2 v;
 	double time;
