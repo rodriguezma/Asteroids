@@ -360,17 +360,17 @@ void Disparo(NodoDisparo **ListaDisparos, EnemyShip *enemiga, ship *nave){
 	}
 }
 
-void ColShipEnemy(EnemyShip *enemiga, ship *nave, Stats *stats){
+void ColShipEnemy(EnemyShip *enemiga, ship *nave, Stats *stats){		
 	if(nave->collisionable){
 		if(enemiga->live){
 		
 			bool col = false;
 			int i = 0;
-			NodoPoly *p = NULL;		
+			NodoPoly *p = NULL;				//Lista de poligonos que compone la nave enemiga
 			
 			poly p1;
 			p1.points = NULL;
-			p1.points = (esat::Vec2*)malloc(sizeof(esat::Vec2)*5);
+			p1.points = (esat::Vec2*)malloc(sizeof(esat::Vec2)*5);	
 			p1.points[0] = enemiga->puntos_globales[0];
 			p1.points[1] = enemiga->puntos_globales[1];
 			p1.points[2] = enemiga->puntos_globales[6];
@@ -390,15 +390,15 @@ void ColShipEnemy(EnemyShip *enemiga, ship *nave, Stats *stats){
 			p2.points[5] = enemiga->puntos_globales[6];
 			p2.points[6] = enemiga->puntos_globales[1];
 			p2.vertices = 6;
-			InsertarLista(&p,p2);
+			InsertarLista(&p,p2);									
 			
 			while(!col && i<5){
 				
 				if (TestColPolys(&p,nave->puntos_globales[i])){
 					col = true;
 					InitShip(nave);
-					enemiga->live = false;
-					stats->lives -= 1;
+					enemiga->live = false;		//muere la nave enemiga
+					stats->lives -= 1;			//Pierde una vida el jmugador
 					
 				}
 				i++;
@@ -411,7 +411,7 @@ void ColShipEnemy(EnemyShip *enemiga, ship *nave, Stats *stats){
 void ColShotEnemy(EnemyShip *enemiga, NodoDisparo **d, Stats *stats){
 	if(enemiga->live) {
 		NodoDisparo *auxd = *d;
-		NodoPoly *p = NULL;
+		NodoPoly *p = NULL;				//Lista de poligonos que compone la nave enemiga
 		bool col = false;
 		
 		poly p1;
@@ -443,8 +443,8 @@ void ColShotEnemy(EnemyShip *enemiga, NodoDisparo **d, Stats *stats){
 			if(TestColPolys( &p, auxd->val.pos)){
 				col = true;
 				EliminarNodo(auxd,d);
-				stats->puntuacion += 200;
-				enemiga->live = false;		
+				stats->puntuacion += 200;		//Puntuacion que se obiene al matar a la nave enemiga
+				enemiga->live = false;			//muere la nave enemiga
 			}
 			auxd = auxd->nextNodo;
 		}
@@ -487,15 +487,15 @@ void ColShotShip(ship *nave, NodoDisparo **d, Stats *stats){
 	p3.points[2] = nave->puntos_globales[4];
 	p3.points[3] = nave->puntos_globales[0];
 	p3.vertices = 3;
-	InsertarLista(&p,p3);
+	InsertarLista(&p,p3);				//Lista de poligonos que compone la nave del jugador
 
 	while(col == false && auxd != NULL){
 		
 		if(TestColPolys( &p, auxd->val.pos)){
 			col = true;
-			InitShip(nave);
+			InitShip(nave);				//Inicializa la nave
 			EliminarNodo(auxd,d);
-			stats->lives -= 1;
+			stats->lives -= 1;			//Pierde una vida
 		}
 		auxd = auxd->nextNodo;
 	}
@@ -504,19 +504,19 @@ void ColShotShip(ship *nave, NodoDisparo **d, Stats *stats){
 		
 }
 
-void CheckDeath(int *GameState, Stats *stats){
+void CheckDeath(int *GameState, Stats *stats){		//Comprueba si no quedan vidas
 	if(stats -> lives == 0)
 		*GameState = 4; 
 }
 
-void CheckWin(int *GameState, NodoAsteroid *asteroides){
+void CheckWin(int *GameState, NodoAsteroid *asteroides){		//Comprueba si no quedan asteroides
 	if(EsvaciaLista(asteroides)){
 		*GameState = 5;
 	}
 }
 
-void InitGame(ship *Nave,EnemyShip *NaveEnemiga,Stats *stats,NodoDisparo **disparos, NodoDisparo **disparos_enemigos, NodoAsteroid **asteroides){
-	BorrarLista(asteroides);
+void InitGame(ship *Nave,EnemyShip *NaveEnemiga,Stats *stats,NodoDisparo **disparos, NodoDisparo **disparos_enemigos, NodoAsteroid **asteroides){		//Inicializa la partida
+	BorrarLista(asteroides);			
 	BorrarLista(disparos);
 	BorrarLista(disparos_enemigos);
 	

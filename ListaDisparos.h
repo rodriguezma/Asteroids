@@ -13,14 +13,14 @@ NodoDisparo* CrearListaDisparo(void){
 	return NULL;
 }
 
-bool EsvaciaLista(NodoDisparo *Lista){
+bool EsvaciaLista(NodoDisparo *Lista){			//Comprueba si esta vacia
 	if(Lista == NULL)
 		return true;
 	else
 		return false;
 }
 
-void EliminarNodo(NodoDisparo *Nodo, NodoDisparo **Lista){
+void EliminarNodo(NodoDisparo *Nodo, NodoDisparo **Lista){		//Elimina el nodo pasado por parametro y conecta los adyacentes si los hubiera
 	
 	if(!EsvaciaLista(*Lista)&& Nodo != NULL){
 		NodoDisparo *nextNodo = Nodo->nextNodo;
@@ -46,7 +46,7 @@ void EliminarNodo(NodoDisparo *Nodo, NodoDisparo **Lista){
 	
 }
 
-void BorrarLista(NodoDisparo **Lista){
+void BorrarLista(NodoDisparo **Lista){		//Recorre la lista borrando los nodos
 	NodoDisparo *auxNodo = NULL;
 	while(!EsvaciaLista(*Lista)){
 		auxNodo = *Lista;
@@ -56,7 +56,7 @@ void BorrarLista(NodoDisparo **Lista){
 }
 
 
-void InsertarLista(NodoDisparo **Lista, disparo val){
+void InsertarLista(NodoDisparo **Lista, disparo val){			//Inserta nodo por el inicio
 	NodoDisparo *Nodo = (NodoDisparo*)malloc(sizeof(NodoDisparo));
 
 	Nodo -> val = val;

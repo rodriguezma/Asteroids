@@ -5,7 +5,7 @@
 struct Er {float a,b,c; };
 struct poly{ esat::Vec2 *points; int vertices; };
 
-esat::Vec2 Vec2xScalar(const esat::Vec2 &v, float scalar){
+esat::Vec2 Vec2xScalar(const esat::Vec2 &v, float scalar){		//Vector por escalar
 	esat::Vec2 s;
 	s.x = v.x * scalar;
 	s.y = v.y * scalar;
@@ -13,7 +13,7 @@ esat::Vec2 Vec2xScalar(const esat::Vec2 &v, float scalar){
 	return s;
 }
 
-esat::Vec2 Vec2minusVec2(const esat::Vec2 &v, const esat::Vec2 &w){
+esat::Vec2 Vec2minusVec2(const esat::Vec2 &v, const esat::Vec2 &w){		//Vector menos vector
 	esat::Vec2 s;
 	s.x = v.x - w.x;
 	s.y = v.y - w.y; 
@@ -21,7 +21,7 @@ esat::Vec2 Vec2minusVec2(const esat::Vec2 &v, const esat::Vec2 &w){
 	return s;
 }
 
-esat::Vec2 Vec2plusVec2(const esat::Vec2 &v, const esat::Vec2 &w){
+esat::Vec2 Vec2plusVec2(const esat::Vec2 &v, const esat::Vec2 &w){		//Vector mas vector
 	esat::Vec2 s;
 	s.x = v.x + w.x;
 	s.y = v.y + w.y; 
@@ -33,7 +33,7 @@ float Module(const esat::Vec2 &v){
 	return(sqrt(v.x*v.x+v.y*v.y));
 }
 
-esat::Vec2 Vec2Normalized(const esat::Vec2 &v){
+esat::Vec2 Vec2Normalized(const esat::Vec2 &v){					//Vector normalizado
 	esat::Vec2 s;
 	if(Module(v)>0){
 		float mod = Module(v);
@@ -47,7 +47,7 @@ esat::Vec2 Vec2Normalized(const esat::Vec2 &v){
 	
 }
 
-Er Vec2toEr(const esat::Vec2 &v, const esat::Vec2 &w){
+Er Vec2toEr(const esat::Vec2 &v, const esat::Vec2 &w){			//Dado dos puntos, saca la ecuacion de la recta
 	
 	Er aux;
 	
@@ -59,7 +59,7 @@ Er Vec2toEr(const esat::Vec2 &v, const esat::Vec2 &w){
 }
 
 
-bool TestDotEr(esat::Vec2 v, Er r){
+bool TestDotEr(esat::Vec2 v, Er r){								//Comprueba el lado al que esta un punto respecto de la recta
 
 	if((r.a * v.x + r.b * v.y + r.c) >= 0)
 		return true;
@@ -67,7 +67,7 @@ bool TestDotEr(esat::Vec2 v, Er r){
 		return false;
 }
 
-bool ColVec2Poly(esat::Vec2 d,poly p){
+bool ColVec2Poly(esat::Vec2 d,poly p){							
 	
 	Er Eaux;
 	for(int i=0;i < p.vertices;i++){

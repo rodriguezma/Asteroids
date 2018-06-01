@@ -98,9 +98,9 @@ void MoveAsteroids(NodoAsteroid **Lista){
 
 }
 
-void InitAsteroids(NodoAsteroid **Lista){
+void InitAsteroids(NodoAsteroid **Lista){		//Inicializa los asteroides de la partida
 
-	asteroid asteroide1;
+	asteroid asteroide1;						//Crea 3 asteroides y los introduce en la lista
 	Init_asteroid(&asteroide1,20);
 	asteroid asteroide2;
 	Init_asteroid(&asteroide2,20);

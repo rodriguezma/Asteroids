@@ -42,18 +42,18 @@ void DrawShip(ship *nave){
 	esat::DrawPath(&(nave->puntos_globales[0].x),6);
 	
 	if(esat::IsSpecialKeyPressed(esat::kSpecialKey_Up)){
-		DrawFire(nave);
+		DrawFire(nave);						//Dibuja el fuego de la nave si pulsa arriba
 	}
 }
 
-void RotateShip(ship *nave){
+void RotateShip(ship *nave){					//Rota la nave izq o derecha
 	if(esat::IsSpecialKeyPressed(esat::kSpecialKey_Right))
 		nave->ShipRads+= 0.1;
 	if(esat::IsSpecialKeyPressed(esat::kSpecialKey_Left))
 		nave->ShipRads-= 0.1;
 }
 
-void CheckVforce(ship * nave){
+void CheckVforce(ship * nave){			//Comprueba que no pase de 15 el modulo
 	if(Module(nave->v_force)>15){
 		float aux = 15/Module(nave->v_force);
 		nave->v_force = Vec2xScalar(nave->v_force,aux);
@@ -75,7 +75,7 @@ void SpeedUp(ship *nave){
 		}
 
 		esat::Vec2 v_aux = Vec2xScalar(nave->v_dir,nave->SpeedUp + 1.f);
-		nave->v_force = Vec2plusVec2(nave->v_force,v_aux);
+		nave->v_force = Vec2plusVec2(nave->v_force,v_aux);					//Compone los vectores para darle inercia al movimiento
 
 		CheckVforce(nave);
 		nave->friction = 0.0001;
@@ -120,7 +120,7 @@ void UpdatePos(ship *nave){
 
 void UpdateColStatus(ship *nave){
 	if(nave->invtime < esat::Time())
-		nave->collisionable = true;
+		nave->collisionable = true;			//Acaba el tiempo de vulnerabilidad
 }
 
 

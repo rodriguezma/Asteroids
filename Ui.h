@@ -10,7 +10,7 @@ using namespace std;
 #include "sqlite3.h"
 #include "ListaAsteroids.h"
 
-int nrows = 0;
+int nrows = 0;					//Numero de filas que devuelve la consulta
 
 static int callback(void *unused, int count, char **data, char **columns)
 {
@@ -45,7 +45,7 @@ void PrintUi(Stats *stats, ship *nave){
 	}
 }
 
-bool Col (esat::Vec2 *v, esat::Vec2 w){
+bool Col (esat::Vec2 *v, esat::Vec2 w){								//Colision basica para comprobar un punto con una caja
 	if(w.x > v[0].x && w.x <v[1].x && w.y > v[0].y && w.y < v[3].y)
 		return true;
 	else 
@@ -88,7 +88,7 @@ bool CheckUser(bd *b, sqlite3 *db){
    int rc;
    string sql;
 
-	sql = "SELECT * FROM USUARIOS WHERE Nickname ='";
+	sql = "SELECT * FROM USUARIOS WHERE Nickname ='"; 		//Consulta Select para comprobar si existen usuarios con los datos introducidos
 	sql += b->user;
 	sql += "' AND Password='";
 	sql += b->password;
@@ -98,12 +98,12 @@ bool CheckUser(bd *b, sqlite3 *db){
 	
 	printf("%s\n",cn);
 	
-	rc = sqlite3_exec(db, cn, callback, NULL, NULL);
+	rc = sqlite3_exec(db, cn, callback, NULL, NULL);		//Ejecuta la consulta
 
 	if( rc != SQLITE_OK ){
 		return false;
-    }else {
-		if(nrows > 0)
+    }else {	
+		if(nrows > 0)							//Si es mayor que 0 significa que ha dado un resultado
 			return true;
 		else 
 			return false;
@@ -166,7 +166,7 @@ bool InsertToDateBase(bd *b, sqlite3 *db){
    int rc;
    string sql;
 
-	sql = "INSERT INTO USUARIOS (Nickname,Name,Password,Country,Subname) VALUES ('";
+	sql = "INSERT INTO USUARIOS (Nickname,Name,Password,Country,Subname) VALUES ('"; 	//Consulta insert para  agregar usuario
 	sql += b->user;
 	sql += "', '";
 	sql += b->name;
@@ -310,7 +310,7 @@ void UpdateDateBase(bd *b, sqlite3 *db, Stats *stats){
    char buffer[50];
    itoa(stats->puntuacion,buffer,10);
 
-   sql = "UPDATE Usuarios SET HighScore = ";
+   sql = "UPDATE Usuarios SET HighScore = ";			//Consulta update para actualizar la puntuacion
 	sql += buffer;
 	sql += " WHERE HighScore < ";
 	sql += buffer;
