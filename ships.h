@@ -70,8 +70,6 @@ esat::Vec2 DecreseVforce(esat::Vec2 &v,float f){
 
 }
 
-
-
 void SpeedUp(ship *nave){
 	if(esat::IsSpecialKeyPressed(esat::kSpecialKey_Up)){
 		if (nave->SpeedUp<3){

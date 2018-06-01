@@ -14,16 +14,16 @@ struct asteroid{
 
 };
 
-void Init_asteroid(asteroid *a, int size){
-	
-	int randAsteroid = rand()%4;
+void Init_asteroid(asteroid *a, int size){		//Inicializa los asteroides
+			
+	int randAsteroid = rand()%4;				//Random para seleccionar el tipo de asteroide
 
 	a->tipo = randAsteroid;
 	
 	switch(randAsteroid){
 		
 		case 0:
-			a->puntos_globales = (esat::Vec2*)malloc(sizeof(esat::Vec2)* 11);
+			a->puntos_globales = (esat::Vec2*)malloc(sizeof(esat::Vec2)* 11);	//Inicaliza los puntos del asteroide
 			a->puntos_locales = (esat::Vec2*)malloc(sizeof(esat::Vec2)*11);
 			a->vertices = 11;
 			a->puntos_locales[0] = {0.f,-2.f};
@@ -93,15 +93,15 @@ void Init_asteroid(asteroid *a, int size){
 		
 	}
 	
-	a->tipo = randAsteroid;
+	
 	a->size = size;
-	a->pos = {(float)(rand()%700 + 50),(float)(rand()%500 + 50)};
-	a->v ={(float)(rand()%21 - 10), (float)(rand()%21 - 10)};
+	a->pos = {(float)(rand()%700 + 50),(float)(rand()%500 + 50)}; 	//Posicion aleatoria
+	a->v ={(float)(rand()%21 - 10), (float)(rand()%21 - 10)};		//Velocidad aleatoria
 	a->v = Vec2xScalar(Vec2Normalized(a->v),3);
 }
 
 void Draw_asteroid(asteroid *a){
-	esat::Mat3 t = esat::Mat3Scale(a->size,a->size);
+	esat::Mat3 t = esat::Mat3Scale(a->size,a->size);						//Pinta el asteroide
 	t = esat::Mat3Multiply(esat::Mat3Translate(a->pos.x,a->pos.y),t);
 	
 	for (int i=0;i<a->vertices;i++){
@@ -111,9 +111,9 @@ void Draw_asteroid(asteroid *a){
 	esat::DrawPath(&(a->puntos_globales[0].x),a->vertices);
 }
 
-void UpdatePos(asteroid *a){
+void UpdatePos(asteroid *a){				//Actualiza la posicion de los asteroides
 	a->pos = Vec2plusVec2(a->pos,a->v);
-	if(a->pos.x<0)
+	if(a->pos.x<0)							//Cambia la posicion cuando se sale de los limites
 		a->pos.x = 800 + a->pos.x;
 	if(a->pos.y<0)
 		a->pos.y = 600 + a->pos.y;

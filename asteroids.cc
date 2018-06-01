@@ -8,11 +8,11 @@
 #include <stdlib.h>
 #include <time.h>
 #include "Game.h"
-#include "bbdd.h"
+
 #include "stats.h"
 
 #define PI 3.14159265
-
+										//Declaracion de variables
 	Stats stats;
 	ship Nave;	
 	EnemyShip NaveEnemiga;
@@ -22,7 +22,7 @@
 	sqlite3 *db;
 	bd user;
 
-void GameLoop(void){
+void GameLoop(void){					//Loop de la partida
 	UpdateColStatus(&Nave);
 	RotateShip(&Nave);
 	UpdateVdir(&Nave);
@@ -53,45 +53,45 @@ void GameLoop(void){
 	PrintUi(&stats, &Nave);
 }
 
-void MainLoop(int *GameState, bd *bduser, int *campo){
+void MainLoop(int *GameState, bd *bduser, int *campo){		//Loop del juego
 
 	switch(*GameState){
 		case 0:
-			PrintMainMenu(GameState,bduser);
+			PrintMainMenu(GameState,bduser);				//Menu inicial
 			break;
 		case 1:
-			PrintLoginMenu(GameState,bduser,campo,db);
+			PrintLoginMenu(GameState,bduser,campo,db);		//Menu de login
 			break;
 		case 2:
-			PrintRegisterMenu(GameState,bduser,campo,db);
+			PrintRegisterMenu(GameState,bduser,campo,db);	//Menu de registro
 			break;
 		case 3:
-			GameLoop();
+			GameLoop();										//Loop de partida
 			CheckDeath(GameState, &stats);
 			CheckWin(GameState, asteroides);
 			break;
 		case 4:
-			PrintGameOverMenu(GameState);
-			break;
-		case 6:
-			InitGame(&Nave,&NaveEnemiga,&stats,&disparos, &disparos_enemigos,&asteroides);
-			*GameState = 3;
+			PrintGameOverMenu(GameState);					//Menu de Game Over
 			break;
 		case 5:
-			PrintWinMenu(GameState,&stats,bduser,db);
+			PrintWinMenu(GameState,&stats,bduser,db);		//Menu de ganar partida
 			break;			
+		case 6:
+			InitGame(&Nave,&NaveEnemiga,&stats,&disparos, &disparos_enemigos,&asteroides);		//caso especial para inicializar el juego
+			*GameState = 3;
+			break;
 	}	
 }
 
 
 int esat::main(int argc, char **argv) {
 	
-	int GameState = 0;
-	int Campo = 0;
+	int GameState = 0;										//Estado del juego para controlar lo que se muestra por pantalla
+	int Campo = 0;											//Campo para controlar donde se pulsa en las cajas de texto
 	
 	srand(time(NULL));
 	
-	double current_time,last_time; 		//tiempo que dura la musica inicial + tiempo actual
+	double current_time,last_time; 		
 	unsigned int fps=60;
 	esat::WindowInit(800,600);
 	

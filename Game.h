@@ -9,7 +9,7 @@
 
 void Disparo(NodoDisparo **ListaDisparos, ship *nave){
 	
-	if(esat::IsSpecialKeyDown(esat::kSpecialKey_Space)){
+	if(esat::IsSpecialKeyDown(esat::kSpecialKey_Space)){		//Inserta un disparo en la lista cuando se pulsa el espacio
 		disparo newshot;
 		Init_disparo(&newshot,nave);
 		InsertarLista(ListaDisparos,newshot);
@@ -17,41 +17,21 @@ void Disparo(NodoDisparo **ListaDisparos, ship *nave){
 	
 }
 
-void BorrarDisparo(NodoDisparo *Lista){
-	NodoDisparo *aux = Lista;
-	aux = aux->nextNodo;
-	if(esat::IsSpecialKeyDown(esat::kSpecialKey_Keypad_2))
-		EliminarNodo(aux,&Lista);
-}
 
-void BorrarAst(NodoAsteroid **Lista){
-	NodoAsteroid *aux = *Lista;
+void DivideAsteoroid(NodoPoly **p, asteroid *a){				
 
-	if(esat::IsSpecialKeyDown(esat::kSpecialKey_Enter))
-		EliminarNodo(aux,Lista);
-}
-
-void BorrarDsp(NodoDisparo **Lista){
-	NodoDisparo *aux = *Lista;
-	
-	if(esat::IsSpecialKeyDown(esat::kSpecialKey_Keypad_1))
-		EliminarNodo(aux,Lista);
-}
-
-void DivideAsteoroid(NodoPoly **p, asteroid *a){
-
-	switch(a->tipo){
-		case 0:
+	switch(a->tipo){													//Dependiendo del tipo de asteroide inicializa los poligonos
+		case 0:	
 			poly p1;
 			p1.vertices = 4;
-			p1.points = (esat::Vec2*)malloc(sizeof(esat::Vec2)*5);
+			p1.points = (esat::Vec2*)malloc(sizeof(esat::Vec2)*5);		
 			p1.points[0] = a->puntos_globales[0];
 			p1.points[1] = a->puntos_globales[1];
 			p1.points[2] = a->puntos_globales[2];
 			p1.points[3] = a->puntos_globales[3];
 			p1.points[4] = a->puntos_globales[0];
 			poly p2;
-			InsertarLista(p,p1);
+			InsertarLista(p,p1);										//Inserta el poligono en la lista
 			p2.vertices = 8;
 			p2.points = (esat::Vec2*)malloc(sizeof(esat::Vec2)*9);
 			p2.points[0] = a->puntos_globales[0];
@@ -169,7 +149,7 @@ bool TestColPolys(NodoPoly **p, esat::Vec2 v){
 	
 	while(aux != NULL){
 	
-		if(ColVec2Poly(v,aux->val))
+		if(ColVec2Poly(v,aux->val))			//Comprueba que el punto colisiona con el poligono
 			return true;
 		aux = aux->nextNodo;
 	}
@@ -178,7 +158,7 @@ bool TestColPolys(NodoPoly **p, esat::Vec2 v){
 
 }
 
-void DivideAsteroidCol(NodoAsteroid **a,int size,esat::Vec2 pos){
+void DivideAsteroidCol(NodoAsteroid **a,int size,esat::Vec2 pos){		//Divide el asteroide en dos mas pequeños
 	asteroid a1,a2;
 	Init_asteroid(&a1,size);
 	Init_asteroid(&a2,size);
@@ -201,12 +181,12 @@ void ColShotAsteroids(NodoAsteroid **a, NodoDisparo **d, Stats *stats){
 		auxa = *a;
 		while(auxa != NULL && col == false){
 
-			DivideAsteoroid(&p, &(auxa->val));
+			DivideAsteoroid(&p, &(auxa->val));					//Divide el asteroide en diferentes poligonos
 			if(TestColPolys( &p, auxd->val.pos)){
 				col = true;
 				switch(auxa->val.size){
 					case 20:
-						stats->puntuacion += 20;
+						stats->puntuacion += 20;				//suma puntuacion dependiendo del tamaño del asteroide
 						break;
 					case 10:
 						stats->puntuacion += 50;
@@ -216,13 +196,13 @@ void ColShotAsteroids(NodoAsteroid **a, NodoDisparo **d, Stats *stats){
 						break;
 				}
 				if(auxa->val.size>5)
-					DivideAsteroidCol(a,auxa->val.size/2,auxa->val.pos);
+					DivideAsteroidCol(a,auxa->val.size/2,auxa->val.pos);	//Dos nuevos asteroides si el asteroide que muere no es el mas pequeño
 				auxd2 = auxd;
 				auxd = auxd->nextNodo;
-				EliminarNodo(auxa,a);
+				EliminarNodo(auxa,a);					//Elimina los nodos
 				EliminarNodo(auxd2,d);
 			}
-			BorrarLista(&p);
+			BorrarLista(&p);			//Borra la lista de poligonos
 			auxa = auxa->nextNodo;
 			
 		}
@@ -231,7 +211,7 @@ void ColShotAsteroids(NodoAsteroid **a, NodoDisparo **d, Stats *stats){
 	}
 }
 
-void ColShotAsteroids(NodoAsteroid **a, NodoDisparo **d){
+void ColShotAsteroids(NodoAsteroid **a, NodoDisparo **d){		//Colision de los disparos enemigos con los asteroides
 	
 	NodoDisparo *auxd = *d;
 	NodoDisparo *auxd2 = NULL;
@@ -271,7 +251,7 @@ void DeadTimeShots(NodoDisparo **d){
 	while(auxd != NULL){
 		auxd2 = auxd->nextNodo;
 		if((auxd->val.time + 1500) < esat::Time()){
-			EliminarNodo(auxd,d);
+			EliminarNodo(auxd,d);						//Elimina el disparo si ha superado el tiempo expiracion
 		}
 		auxd = auxd2;
 	}
@@ -307,9 +287,9 @@ void ColShipAsteroids(ship *nave, NodoAsteroid **a, Stats *stats){
 					auxa2 = auxa;
 					auxa = auxa->nextNodo;
 					EliminarNodo(auxa2,a);
-					InitShip(nave);
-					stats->lives -=1;
-				}
+					InitShip(nave); 					//Inicializa la nave al colisionar con un asteroide
+					stats->lives -=1;					//Pierde una vida
+				}	
 				BorrarLista(&p);
 				i++;
 				
@@ -350,7 +330,7 @@ void ColEnemyAsteroids(EnemyShip *nave, NodoAsteroid **a){
 				colDot = ColShip[i];
 				if(TestColPolys(&p,colDot)){
 					col = true;
-					nave->live = false;
+					nave->live = false;				//Se desactiva la nave
 					if(auxa->val.size>5)
 						DivideAsteroidCol(a,auxa->val.size/2,auxa->val.pos);
 					auxa2 = auxa;
@@ -372,7 +352,7 @@ void ColEnemyAsteroids(EnemyShip *nave, NodoAsteroid **a){
 
 void Disparo(NodoDisparo **ListaDisparos, EnemyShip *enemiga, ship *nave){
 	if(enemiga->live){
-		if(rand()%1000 < 10){
+		if(rand()%1000 < 10){				//Disparo de la nave si se cumple el aleatorio
 			disparo newshot;
 			Init_disparo(&newshot,enemiga,nave->pos);
 			InsertarLista(ListaDisparos,newshot);
